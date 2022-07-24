@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kapaas/screens/customers.dart';
+import 'screens/screens.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +16,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Kapaas'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Kapaas'),
+        '/customers': (context) => const CustomerScreen(),
+      },
     );
   }
 }
@@ -75,11 +81,32 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Customers'),
               onTap: (() {
                 // Go to customers page
+                navigateTo(Screens.customers);
               }),
             )
           ],
         ),
       ),
     );
+  }
+
+  void navigateTo(Screens screen) {
+    switch (screen) {
+      case Screens.customers:
+        Navigator.pushNamed(context, '/customers');
+        break;
+      case Screens.orders:
+        // TODO: Handle this case.
+        break;
+      case Screens.products:
+        // TODO: Handle this case.
+        break;
+      case Screens.payments:
+        // TODO: Handle this case.
+        break;
+      case Screens.employees:
+        // TODO: Handle this case.
+        break;
+    }
   }
 }
