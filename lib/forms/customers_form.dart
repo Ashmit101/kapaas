@@ -39,7 +39,7 @@ class _CustomerFormState extends State<CustomersForm> {
                 hintText: 'What is the customer\'s phone number?',
                 label: Text('Phone number'),
               ),
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.phone,
               validator: ((value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a contact number';
