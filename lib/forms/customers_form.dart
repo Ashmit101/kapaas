@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kapaas/database/db_helper.dart';
+import 'package:kapaas/entities/customer.dart';
+
+DbHelper dbHelper = DbHelper();
 
 class CustomersForm extends StatefulWidget {
   const CustomersForm({Key? key}) : super(key: key);
@@ -9,6 +13,9 @@ class CustomersForm extends StatefulWidget {
 
 class _CustomerFormState extends State<CustomersForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +32,7 @@ class _CustomerFormState extends State<CustomersForm> {
                 hintText: 'What is the customer\'s name?',
                 label: Text('Name'),
               ),
+              controller: nameController,
               keyboardType: TextInputType.name,
               validator: ((value) {
                 if (value == null || value.isEmpty) {
@@ -39,6 +47,7 @@ class _CustomerFormState extends State<CustomersForm> {
                 hintText: 'What is the customer\'s phone number?',
                 label: Text('Phone number'),
               ),
+              controller: phoneController,
               keyboardType: TextInputType.phone,
               validator: ((value) {
                 if (value == null || value.isEmpty) {
@@ -53,9 +62,16 @@ class _CustomerFormState extends State<CustomersForm> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       //Info correct
+                      var name = nameController.text;
+                      var phone = phoneController.text;
+
+                      Customer customer = Customer(name, phone);
+                      int id = await dbHelper.saveCustomer(customer);
+
+                      print("Customer saved with ID: $id");
                     }
                   },
                   child: const Text('Save')),
