@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(title: 'Kapaas'),
         '/customers': (context) => const CustomerScreen(),
+        '/customers/form': (context) => const CustomersForm(),
       },
     );
   }

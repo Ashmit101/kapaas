@@ -17,6 +17,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
           //DO something
+          Navigator.pushNamed(context, '/customers/form');
         }),
         child: const Icon(Icons.add),
       ),
