@@ -25,7 +25,7 @@ class DbHelper {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-            'CREATE TABLE customers (id INTEGER PRIMARY KEY, name varchar[20], phone varchar[10]');
+            'CREATE TABLE customers (id INTEGER PRIMARY KEY, name varchar[20], phone varchar[10])');
       },
     );
   }
@@ -33,10 +33,15 @@ class DbHelper {
   Future<int> saveCustomer(Customer c) async {
     int id = await database.transaction((txn) async {
       int id = await txn.rawInsert(
-          'INSERT INTO customers(name, phone) VALUES(${c.name}, ${c.contact})');
+          'INSERT INTO customers(name, phone) VALUES("${c.name}", ${c.contact})');
       return id;
     });
     return id;
+  }
+
+  Future<List<Map>> readCustomer() async {
+    List<Map> list = await database.rawQuery('SELECT * FROM customers');
+    return list;
   }
 
   void close() async {
