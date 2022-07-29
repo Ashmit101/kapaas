@@ -41,6 +41,7 @@ class DbHelper {
 
   Future<List<Map>> readCustomer() async {
     List<Map> list = await database.rawQuery('SELECT * FROM customers');
+    print('DbHelper: $list');
     return list;
   }
 

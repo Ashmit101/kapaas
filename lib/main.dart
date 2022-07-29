@@ -85,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Go to customers page
                 navigateTo(Screens.customers);
               }),
+              
             )
           ],
         ),

@@ -8,4 +8,10 @@ class Customer {
   void setID(int id) {
     this.id = id;
   }
+
+  Customer.fromMap(Map<dynamic, dynamic> mapOfCustomer)
+      : name = mapOfCustomer['name'],
+        contact = mapOfCustomer['phone'] {
+    id = mapOfCustomer['id'] as int;
+  }
 }

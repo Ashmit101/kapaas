@@ -72,6 +72,8 @@ class _CustomerFormState extends State<CustomersForm> {
                       int id = await _dbHelper.saveCustomer(customer);
 
                       print("Customer saved with ID: $id");
+
+                      goBackToListPage(context);
                     }
                   },
                   child: const Text('Save')),
@@ -81,4 +83,8 @@ class _CustomerFormState extends State<CustomersForm> {
       ),
     );
   }
+}
+
+void goBackToListPage(BuildContext context) {
+  Navigator.pop(context, true);
 }
