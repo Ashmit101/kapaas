@@ -1,5 +1,6 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/services.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
@@ -23,11 +24,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'Kapaas'),
+        '/': (context) => const MyHomePage(title: 'Kapaas'), // default home:
         '/customers': (context) => const CustomerScreen(),
         '/customers/form': (context) => const CustomersForm(),
-        
-        '/products':(context) => const ProductScreen(),
+
+        '/products': (context) => const ProductScreen(),
         '/products/form': (context) => const ProductsForm(),
 
         '/employees': (context) => const EmployeeScreen(),
@@ -47,7 +48,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final List<String> imageList = [
     'assets/images/marina-abrosimova-S-T0FPEnGZM-unsplash.jpg',
     'assets/images/ayrton-bR4BzKRZSDo-unsplash.jpg',
@@ -58,14 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      
-      body: Column(
-        children: [
-          Container(
+
+      body: Column(children: [
+        Container(
           margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: CarouselSlider.builder(
             itemCount: imageList.length,
@@ -76,48 +74,43 @@ class _MyHomePageState extends State<MyHomePage> {
               reverse: false,
               aspectRatio: 2,
             ),
-            itemBuilder: (context, i, id){
+            itemBuilder: (context, i, id) {
               return GestureDetector(
                   child: ClipRRect(
-                    child:Image.asset(
-                        imageList[i],
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                    ),
-                  )
-              );
+                child: Image.asset(
+                  imageList[i],
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
+                ),
+              ));
             },
           ),
         ),
-        const SizedBox(height:20),
+        const SizedBox(height: 20),
         ElevatedButton.icon(
           onPressed: () {},
-          icon: const Icon(Icons.add_shopping_cart_rounded), 
+          icon: const Icon(Icons.add_shopping_cart_rounded),
           label: const Text('Place Order Now!'),
         )
-        ]
-      ),
-
-
+      ]),
+      drawerScrimColor: Color.fromARGB(200, 0, 0, 0),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
       drawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.75, // 75% width
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            SizedBox(
-              height:150,
-              child: DrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(90, 29, 185, 196),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset('assets/logo.png', width:50, height:50,),
-                      const SizedBox(width:20), //Spacing
-                      const Text("Kapaas", style: TextStyle(fontSize: 28),),
-                    ],
-                  ),
-                ),
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.blue,
+                  image: DecorationImage(
+                    image: AssetImage('lib/images/Kapaas.png'),
+                  )),
+              child: Center(child: Text(' ')),
             ),
             ListTile(
               leading: const Icon(Icons.account_circle),

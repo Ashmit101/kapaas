@@ -1,7 +1,7 @@
 class Measurement {
-  int custonerId;
+  int customerId;
   double neck, wrist, hip, waist, shoulder, arm;
 
-  Measurement(this.custonerId, this.neck, this.wrist, this.hip, this.waist,
+  Measurement(this.customerId, this.neck, this.wrist, this.hip, this.waist,
       this.shoulder, this.arm);
 }
