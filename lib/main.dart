@@ -1,4 +1,6 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'Kapaas'),
+        '/': (context) => const MyHomePage(title: 'Kapaas'), // default home:
         '/customers': (context) => const CustomerScreen(),
         '/customers/form': (context) => const CustomersForm(),
       },
@@ -65,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      drawerScrimColor: Color.fromARGB(200, 0, 0, 0),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
@@ -75,17 +78,19 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-                decoration: BoxDecoration(
+              decoration: BoxDecoration(
                   color: Colors.blue,
-                ),
-                child: Text('Kapaas Entities')),
+                  image: DecorationImage(
+                    image: AssetImage('lib/images/Kapaas.png'),
+                  )),
+              child: Center(child: Text(' ')),
+            ),
             ListTile(
               title: const Text('Customers'),
               onTap: (() {
                 // Go to customers page
                 navigateTo(Screens.customers);
               }),
-              
             )
           ],
         ),
