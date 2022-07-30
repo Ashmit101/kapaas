@@ -1,6 +1,4 @@
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
@@ -104,6 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+            Container(
+              color: Colors.blue,
+              height: 35,
+            ),
             const DrawerHeader(
               decoration: BoxDecoration(
                   color: Colors.blue,
