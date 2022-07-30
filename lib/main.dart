@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
+
+import 'screens/products.dart';
+import 'screens/employees.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,14 +18,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kapaas',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.dark(),
       initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(title: 'Kapaas'),
         '/customers': (context) => const CustomerScreen(),
         '/customers/form': (context) => const CustomersForm(),
+        
+        '/products':(context) => const ProductScreen(),
+
+        '/employees': (context) => const EmployeeScreen(),
       },
     );
   }
@@ -37,55 +43,144 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final List<String> imageList = [
+    'assets/images/marina-abrosimova-S-T0FPEnGZM-unsplash.jpg',
+    'assets/images/ayrton-bR4BzKRZSDo-unsplash.jpg',
+    'assets/images/freysteinn-g-jonsson-X4wXfbhUe_4-unsplash.jpg',
+    'assets/images/dmitry-dreyer-Qx1PqHChW80-unsplash.jpg',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      
+      body: Column(
+        children: [
+          Container(
+            alignment:FractionalOffset.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(height:10),
+                Image.asset('assets/logo.png', width:80, height:80),
+                const SizedBox(height:10),
+                const Text("Kapaas",style: TextStyle(fontSize:28)),
+                const Text("A BOUTIQUE DATABASE MANAGEMENT SYSYEM", style: TextStyle(fontSize:6),),
+                const SizedBox(height:10),
+              ],
+            )
+          ),
+          Container(
+          margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          child: CarouselSlider.builder(
+            itemCount: imageList.length,
+            options: CarouselOptions(
+              enlargeCenterPage: true,
+              height:200,
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 3),
+              reverse: false,
+              aspectRatio: 5.0,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+            itemBuilder: (context, i, id){
+              return GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.white,)
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child:Image.asset(
+                        imageList[i],
+                        width: 500,
+                        fit: BoxFit.cover,
+                    ),
+                  )
+                ),
+              );
+            },
+          ),
         ),
+        const SizedBox(height:20),
+        ElevatedButton.icon(
+          onPressed: () {}, 
+          icon: const Icon(Icons.add_shopping_cart_rounded), 
+          label: const Text('Place Order Now!'),
+        )
+        ]
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+
       drawer: Drawer(
+        width: MediaQuery.of(context).size.width * 0.75, // 75% width
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
+            SizedBox(
+              height:150,
+              child: DrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(90, 29, 185, 196),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset('assets/logo.png', width:50, height:50,),
+                      const SizedBox(width:20), //Spacing
+                      const Text("Kapaas", style: TextStyle(fontSize: 28),),
+                    ],
+                  ),
                 ),
-                child: Text('Kapaas Entities')),
+            ),
             ListTile(
-              title: const Text('Customers'),
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Customers', style: TextStyle(fontSize: 16)),
               onTap: (() {
                 // Go to customers page
                 navigateTo(Screens.customers);
               }),
-              
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_shopping_cart_rounded),
+              title: const Text('Orders', style: TextStyle(fontSize: 16)),
+              onTap: (() {
+                // Go to customers page
+              }),
+            ),
+            ListTile(
+              leading: const Icon(Icons.shopping_bag_rounded),
+              title: const Text('Products', style: TextStyle(fontSize: 16)),
+              onTap: (() {
+                // Go to customers page
+                navigateTo(Screens.products);
+              }),
+            ),
+            ListTile(
+              leading: const Icon(Icons.attach_money_rounded),
+              title: const Text('Payments', style: TextStyle(fontSize: 16)),
+              onTap: (() {
+                // Go to customers page
+              }),
+            ),
+            ListTile(
+              leading: const Icon(Icons.business_center_rounded),
+              title: const Text('Employees', style: TextStyle(fontSize: 16)),
+              onTap: (() {
+                // Go to Employee page
+                navigateTo(Screens.employees);
+              }),
+            ),
+            ListTile(
+              leading: const Icon(Icons.info_outline_rounded),
+              title: const Text('About', style: TextStyle(fontSize: 16)),
+              onTap: (() {
+                // Go to Employee page
+              }),
             )
           ],
         ),
@@ -103,11 +198,16 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       case Screens.products:
         // TODO: Handle this case.
+        Navigator.pushNamed(context, '/products');
         break;
       case Screens.payments:
         // TODO: Handle this case.
         break;
       case Screens.employees:
+        // TODO: Handle this case.
+        Navigator.pushNamed(context, '/employees');
+        break;
+      case Screens.about:
         // TODO: Handle this case.
         break;
     }

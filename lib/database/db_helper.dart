@@ -24,8 +24,10 @@ class DbHelper {
       path,
       version: 1,
       onCreate: (db, version) async {
-        await db.execute(
-            'CREATE TABLE customers (id INTEGER PRIMARY KEY, name varchar[20], phone varchar[10])');
+        await db.execute('''
+            CREATE TABLE customers (id INTEGER PRIMARY KEY, name varchar[20], phone varchar[10]);
+            '''
+        );
       },
     );
   }
