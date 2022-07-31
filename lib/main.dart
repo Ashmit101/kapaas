@@ -5,6 +5,7 @@ import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
+import 'package:kapaas/forms/products_form.dart';
 import 'screens/employees.dart';
 
 void main() {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/customers/form': (context) => const CustomersForm(),
         
         '/products':(context) => const ProductScreen(),
+        '/products/form': (context) => const ProductsForm(),
 
         '/employees': (context) => const EmployeeScreen(),
       },
@@ -80,36 +82,28 @@ class _MyHomePageState extends State<MyHomePage> {
           child: CarouselSlider.builder(
             itemCount: imageList.length,
             options: CarouselOptions(
-              enlargeCenterPage: true,
-              height:200,
               autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayInterval: const Duration(seconds: 10),
+              viewportFraction: 1,
               reverse: false,
-              aspectRatio: 5.0,
+              aspectRatio: 2,
             ),
             itemBuilder: (context, i, id){
               return GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white,)
-                  ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
                     child:Image.asset(
                         imageList[i],
-                        width: 500,
+                        width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                     ),
                   )
-                ),
               );
             },
           ),
         ),
         const SizedBox(height:20),
         ElevatedButton.icon(
-          onPressed: () {}, 
+          onPressed: () {},
           icon: const Icon(Icons.add_shopping_cart_rounded), 
           label: const Text('Place Order Now!'),
         )

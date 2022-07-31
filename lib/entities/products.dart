@@ -1,7 +1,18 @@
 class Product {
-  int id;
+  int? id;
   String name;
-  double rate;
+  int price;
 
-  Product(this.id, this.name, this.rate);
+  Product(this.name, this.price);
+
+  void setID(int id){
+    this.id = id;
+  }
+
+  Product.fromMap(Map<dynamic, dynamic> 
+  mapOfProduct)
+    :name = mapOfProduct['name'],
+     price = mapOfProduct['price'] {
+      id = mapOfProduct['id'] as int;
+    }
 }
