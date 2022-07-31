@@ -4,4 +4,5 @@ enum Screens {
   products,
   payments,
   employees,
+  about,
 }
