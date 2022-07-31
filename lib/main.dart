@@ -7,6 +7,7 @@ import 'screens/screens.dart';
 import 'screens/products.dart';
 import 'package:kapaas/forms/products_form.dart';
 import 'screens/employees.dart';
+import 'screens/about.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kapaas',
-      theme: ThemeData.dark(),
+      theme: ThemeData.light(),
       initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(title: 'Kapaas'),
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/products/form': (context) => const ProductsForm(),
 
         '/employees': (context) => const EmployeeScreen(),
+        '/about': (context) => const AboutScreen(),
       },
     );
   }
@@ -63,20 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
       
       body: Column(
         children: [
-          Container(
-            alignment:FractionalOffset.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(height:10),
-                Image.asset('assets/logo.png', width:80, height:80),
-                const SizedBox(height:10),
-                const Text("Kapaas",style: TextStyle(fontSize:28)),
-                const Text("A BOUTIQUE DATABASE MANAGEMENT SYSYEM", style: TextStyle(fontSize:6),),
-                const SizedBox(height:10),
-              ],
-            )
-          ),
           Container(
           margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: CarouselSlider.builder(
@@ -174,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('About', style: TextStyle(fontSize: 16)),
               onTap: (() {
                 // Go to Employee page
+                navigateTo(Screens.about);
               }),
             )
           ],
@@ -203,6 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       case Screens.about:
         // TODO: Handle this case.
+        Navigator.pushNamed(context, '/about');
         break;
     }
   }
