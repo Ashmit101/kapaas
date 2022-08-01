@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
@@ -93,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ]),
       drawerScrimColor: Color.fromARGB(200, 0, 0, 0),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
