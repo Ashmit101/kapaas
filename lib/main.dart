@@ -5,7 +5,9 @@ import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
+import 'package:kapaas/forms/products_form.dart';
 import 'screens/employees.dart';
+import 'screens/about.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kapaas',
-      theme: ThemeData.dark(),
+      theme: ThemeData.light(),
       initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(title: 'Kapaas'),
@@ -26,8 +28,10 @@ class MyApp extends StatelessWidget {
         '/customers/form': (context) => const CustomersForm(),
         
         '/products':(context) => const ProductScreen(),
+        '/products/form': (context) => const ProductsForm(),
 
         '/employees': (context) => const EmployeeScreen(),
+        '/about': (context) => const AboutScreen(),
       },
     );
   }
@@ -62,54 +66,32 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           Container(
-            alignment:FractionalOffset.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(height:10),
-                Image.asset('assets/logo.png', width:80, height:80),
-                const SizedBox(height:10),
-                const Text("Kapaas",style: TextStyle(fontSize:28)),
-                const Text("A BOUTIQUE DATABASE MANAGEMENT SYSYEM", style: TextStyle(fontSize:6),),
-                const SizedBox(height:10),
-              ],
-            )
-          ),
-          Container(
           margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: CarouselSlider.builder(
             itemCount: imageList.length,
             options: CarouselOptions(
-              enlargeCenterPage: true,
-              height:200,
               autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayInterval: const Duration(seconds: 10),
+              viewportFraction: 1,
               reverse: false,
-              aspectRatio: 5.0,
+              aspectRatio: 2,
             ),
             itemBuilder: (context, i, id){
               return GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white,)
-                  ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
                     child:Image.asset(
                         imageList[i],
-                        width: 500,
+                        width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                     ),
                   )
-                ),
               );
             },
           ),
         ),
         const SizedBox(height:20),
         ElevatedButton.icon(
-          onPressed: () {}, 
+          onPressed: () {},
           icon: const Icon(Icons.add_shopping_cart_rounded), 
           label: const Text('Place Order Now!'),
         )
@@ -180,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('About', style: TextStyle(fontSize: 16)),
               onTap: (() {
                 // Go to Employee page
+                navigateTo(Screens.about);
               }),
             )
           ],
@@ -209,6 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       case Screens.about:
         // TODO: Handle this case.
+        Navigator.pushNamed(context, '/about');
         break;
     }
   }

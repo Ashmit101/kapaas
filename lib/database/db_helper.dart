@@ -1,4 +1,5 @@
 import 'package:kapaas/entities/customer.dart';
+import 'package:kapaas/entities/products.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -24,14 +25,14 @@ class DbHelper {
       path,
       version: 1,
       onCreate: (db, version) async {
-        await db.execute('''
-            CREATE TABLE customers (id INTEGER PRIMARY KEY, name varchar[20], phone varchar[10]);
-            '''
-        );
+        await db.execute('CREATE TABLE customers (id INTEGER PRIMARY KEY, name varchar[20], phone varchar[10])');
+        await db.execute('CREATE TABLE products (id INTEGER PRIMARY KEY, name varchar[20], price INTEGER)');
       },
     );
   }
 
+
+  // customer dbHelper
   Future<int> saveCustomer(Customer c) async {
     int id = await database.transaction((txn) async {
       int id = await txn.rawInsert(
@@ -43,6 +44,22 @@ class DbHelper {
 
   Future<List<Map>> readCustomer() async {
     List<Map> list = await database.rawQuery('SELECT * FROM customers');
+    print('DbHelper: $list');
+    return list;
+  }
+
+  //products dbHelper
+  Future<int> saveProduct(Product p) async {
+    int id = await database.transaction((txn) async{
+      int id = await txn.rawInsert(
+        'INSERT INTO products(name, price) VALUES("${p.name}",${p.price})');
+      return id;
+    });
+    return id;
+  }
+
+  Future<List<Map>> readProducts() async {
+    List<Map> list = await database.rawQuery('SELECT * FROM products');
     print('DbHelper: $list');
     return list;
   }
