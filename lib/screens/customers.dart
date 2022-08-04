@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kapaas/database/db_helper.dart';
+// import 'package:kapaas/database/db_helper.dart';
+import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/tiles/customer_tile.dart';
+import 'package:provider/provider.dart';
 
-import '../entities/customer.dart';
+// import '../entities/customer.dart
 
-DbHelper _dbHelper = DbHelper();
+// DbHelper _dbHelper = DbHelper();
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);
@@ -14,7 +16,7 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-  Future<List<Map>> storedCustomersData = _dbHelper.readCustomer();
+  // Future<List<Map>> storedCustomersData = Provider.of<KapaasDatabase>(context);
 
   final Widget circularProgress = const Center(
     child: CircularProgressIndicator(),
@@ -27,8 +29,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(storedCustomersData);
-
+    final database = Provider.of<KapaasDatabase>(context);
+    var storedCustomersData = database.allCustomerEntries;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Customers'),
@@ -51,16 +53,17 @@ class _CustomerScreenState extends State<CustomerScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             //Future has completed
             if (snapshot.hasData) {
-              List<Map> customers = snapshot.data as List<Map>;
+              List<Customer> customers = snapshot.data as List<Customer>;
               //Display the list of customers
               return ListView.builder(
                 itemCount: customers.length,
                 itemBuilder: (context, index) {
-                  var customer = Customer.fromMap(customers[index]);
+                  // var customer = Customer.fromMap(customers[index]);
+                  var customer = customers[index];
                   return CustomerTile(
                       id: customer.id!,
                       name: customer.name,
-                      contact: customer.contact);
+                      contact: customer.phone);
                 },
               );
             } else if (snapshot.hasError) {
@@ -81,7 +84,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   void refreshCustomerData() {
     setState(() {
-      storedCustomersData = _dbHelper.readCustomer();
+      // re fetch data
     });
   }
 }

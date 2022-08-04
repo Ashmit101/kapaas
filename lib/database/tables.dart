@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 part 'tables.g.dart';
 
 class Customers extends Table {
-  IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().autoIncrement().nullable()();
   TextColumn get name => text().withLength(max: 32)();
   TextColumn get phone => text().withLength(max: 10)();
 }

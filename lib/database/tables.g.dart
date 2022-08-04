@@ -8,15 +8,14 @@ part of 'tables.dart';
 
 // ignore_for_file: type=lint
 class Customer extends DataClass implements Insertable<Customer> {
-  final int id;
+  final int? id;
   final String name;
   final String phone;
-  Customer({required this.id, required this.name, required this.phone});
+  Customer({this.id, required this.name, required this.phone});
   factory Customer.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Customer(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       phone: const StringType()
@@ -26,7 +25,9 @@ class Customer extends DataClass implements Insertable<Customer> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
     map['name'] = Variable<String>(name);
     map['phone'] = Variable<String>(phone);
     return map;
@@ -34,7 +35,7 @@ class Customer extends DataClass implements Insertable<Customer> {
 
   CustomersCompanion toCompanion(bool nullToAbsent) {
     return CustomersCompanion(
-      id: Value(id),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       name: Value(name),
       phone: Value(phone),
     );
@@ -44,7 +45,7 @@ class Customer extends DataClass implements Insertable<Customer> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Customer(
-      id: serializer.fromJson<int>(json['id']),
+      id: serializer.fromJson<int?>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       phone: serializer.fromJson<String>(json['phone']),
     );
@@ -53,7 +54,7 @@ class Customer extends DataClass implements Insertable<Customer> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<int?>(id),
       'name': serializer.toJson<String>(name),
       'phone': serializer.toJson<String>(phone),
     };
@@ -86,7 +87,7 @@ class Customer extends DataClass implements Insertable<Customer> {
 }
 
 class CustomersCompanion extends UpdateCompanion<Customer> {
-  final Value<int> id;
+  final Value<int?> id;
   final Value<String> name;
   final Value<String> phone;
   const CustomersCompanion({
@@ -101,7 +102,7 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
   })  : name = Value(name),
         phone = Value(phone);
   static Insertable<Customer> custom({
-    Expression<int>? id,
+    Expression<int?>? id,
     Expression<String>? name,
     Expression<String>? phone,
   }) {
@@ -113,7 +114,7 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
   }
 
   CustomersCompanion copyWith(
-      {Value<int>? id, Value<String>? name, Value<String>? phone}) {
+      {Value<int?>? id, Value<String>? name, Value<String>? phone}) {
     return CustomersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -125,7 +126,7 @@ class CustomersCompanion extends UpdateCompanion<Customer> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     if (id.present) {
-      map['id'] = Variable<int>(id.value);
+      map['id'] = Variable<int?>(id.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -156,7 +157,7 @@ class $CustomersTable extends Customers
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
-      'id', aliasedName, false,
+      'id', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
