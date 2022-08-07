@@ -182,18 +182,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // TODO: Handle this case.
         break;
       case Screens.products:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/products');
         break;
       case Screens.payments:
         // TODO: Handle this case.
         break;
       case Screens.employees:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/employees');
         break;
       case Screens.about:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/about');
         break;
     }

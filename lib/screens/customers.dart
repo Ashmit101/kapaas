@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:kapaas/database/db_helper.dart';
 import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/tiles/customer_tile.dart';
 import 'package:provider/provider.dart';
-
-// import '../entities/customer.dart
-
-// DbHelper _dbHelper = DbHelper();
 
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);
