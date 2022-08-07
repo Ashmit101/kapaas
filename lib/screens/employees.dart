@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kapaas/database/db_helper.dart';
-import '../entities/employees.dart';
-
-DbHelper _dbHelper = DbHelper();
 
 class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({Key? key}) : super(key: key);
@@ -12,14 +8,10 @@ class EmployeeScreen extends StatefulWidget {
 }
 
 class _EmployeeScreenState extends State<EmployeeScreen> {
-  
-  var employeeMenuItems = <String>[
-    'Add', 
-    'Remove'
-  ];
+  var employeeMenuItems = <String>['Add', 'Remove'];
 
   void onSelect(item) {
-    switch(item) {
+    switch (item) {
       case 'Add':
         print('Add clicked');
         break;
@@ -29,24 +21,23 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
     }
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Employees'),
         actions: <Widget>[
-            PopupMenuButton<String>(
-              itemBuilder: (BuildContext context) {
-                return employeeMenuItems.map((String choice) {
-                    return PopupMenuItem<String>(
-                      child: Text(choice),
-                      value: choice,
-                    );
-                  }
-                ).toList();
-              }, 
-              onSelected: onSelect,
-            ),
+          PopupMenuButton<String>(
+            itemBuilder: (BuildContext context) {
+              return employeeMenuItems.map((String choice) {
+                return PopupMenuItem<String>(
+                  child: Text(choice),
+                  value: choice,
+                );
+              }).toList();
+            },
+            onSelected: onSelect,
+          ),
         ],
       ),
     );

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kapaas/database/db_helper.dart';
+import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/tiles/product_tile.dart';
-
-import '../entities/products.dart';
-
-DbHelper _dbHelper = DbHelper();
+import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -14,8 +11,6 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  Future<List<Map>> storedProductsData = _dbHelper.readProducts();
-
   final Widget circularProgress = const Center(
     child: CircularProgressIndicator(),
   );
@@ -25,8 +20,10 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
+    final database = Provider.of<KapaasDatabase>(context);
+    var storedProductsData = database.allProductsEntries;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Products'),
@@ -35,41 +32,43 @@ class _ProductScreenState extends State<ProductScreen> {
             padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(
               onTap: (() async {
-                bool succeeded = await Navigator.pushNamed(context, '/products/form') as bool;
+                bool succeeded =
+                    await Navigator.pushNamed(context, '/products/form')
+                        as bool;
 
                 if (succeeded) {
-                  refreshProductData();
+                  // refreshProductData();
                 }
               }),
-              child: const Icon(Icons.add, size: 26,),
+              child: const Icon(
+                Icons.add,
+                size: 26,
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              onTap: () {},
-              child: const Icon(Icons.more_vert),
-            )
-          ),
+              padding: const EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                onTap: () {},
+                child: const Icon(Icons.more_vert),
+              )),
         ],
       ),
-
       body: FutureBuilder(
         future: storedProductsData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              List<Map> products = snapshot.data as List<Map>;
+              List<Product> products = snapshot.data as List<Product>;
               return ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (context, index){
-                  var product = Product.fromMap(products[index]);
-                  return ProductTile(
-                    id: product.id!,
-                    name: product.name,
-                    price: product.price);
-                }
-              );
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    var product = products[index];
+                    return ProductTile(
+                        id: product.id!,
+                        name: product.name,
+                        price: product.price);
+                  });
             } else if (snapshot.hasError) {
               return const Center(
                 child: Text('No product available right now.'),
@@ -81,14 +80,8 @@ class _ProductScreenState extends State<ProductScreen> {
             //Future is still loading
             return circularProgress;
           }
-        } ,
+        },
       ),
     );
-  }
-
-  void refreshProductData() {
-    setState( () {
-      storedProductsData = _dbHelper.readProducts();
-    });
   }
 }
