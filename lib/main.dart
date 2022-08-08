@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/forms/customers_form.dart';
+import 'package:kapaas/forms/measurements_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
@@ -37,6 +38,10 @@ class MyApp extends StatelessWidget {
 
           '/employees': (context) => const EmployeeScreen(),
           '/about': (context) => const AboutScreen(),
+
+          '/customers/measurements/form': (context) => const MeasurementsForm(
+                customerId: 0,
+              ),
         },
       ),
     );

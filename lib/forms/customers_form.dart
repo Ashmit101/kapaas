@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kapaas/database/tables.dart';
 import 'package:provider/provider.dart';
-// import 'package:kapaas/entities/customer.dart';
-
-// DbHelper _dbHelper = DbHelper();
 
 class CustomersForm extends StatefulWidget {
   const CustomersForm({Key? key}) : super(key: key);
@@ -73,7 +70,6 @@ class _CustomerFormState extends State<CustomersForm> {
                       var phone = phoneController.text;
 
                       final customer = Customer(name: name, phone: phone);
-                      // // int id = await _dbHelper.saveCustomer(customer);
                       database.insertCustomer(customer);
                       goBackToListPage(context);
                     }
