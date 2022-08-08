@@ -89,6 +89,15 @@ class KapaasDatabase extends _$KapaasDatabase {
   Future deleteMeasurement(Measurement measurement) =>
       delete(measurements).delete(measurement); // Delete a measurement
 
+  // Employees commands
+  Future<List<Employee>> get allEmployeeEntries =>
+      select(employees).get(); // Get all the stored employees
+  Future insertEmployee(Employee employee) =>
+      into(employees).insert(employee); // Insert a new employee
+  Future updateEmployee(Employee employee) =>
+      update(employees).replace(employee); // Update an existing employee
+  Future deleteEmployee(Employee employee) =>
+      delete(employees).delete(employee); // Delete a employee
 }
 
 LazyDatabase _openConnection() {
