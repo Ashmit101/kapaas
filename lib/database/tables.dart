@@ -50,17 +50,30 @@ class KapaasDatabase extends _$KapaasDatabase {
   int get schemaVersion => 1;
 
   //Customers commands
-  Future<List<Customer>> get allCustomerEntries => select(customers).get();
-  Future insertCustomer(Customer customer) => into(customers).insert(customer);
+  Future<List<Customer>> get allCustomerEntries =>
+      select(customers).get(); // Get all the stored customers
+  Future insertCustomer(Customer customer) =>
+      into(customers).insert(customer); // Insert a new customer
   Future updateCustomer(Customer customer) =>
-      update(customers).replace(customer);
+      update(customers).replace(customer); // Update an existing customer
   Future deleteCustomer(Customer customer) =>
-      delete(customers).delete(customer);
+      delete(customers).delete(customer); // Delete a customer
 
-  Future<List<Product>> get allProductsEntries => select(products).get();
-  Future insertProduct(Product product) => into(products).insert(product);
-  Future updateProduct(Product product) => update(products).replace(product);
-  Future deleteProduct(Product product) => delete(products).delete(product);
+  // Products commands
+  Future<List<Product>> get allProductsEntries =>
+      select(products).get(); // Get all the stored products
+  Future insertProduct(Product product) =>
+      into(products).insert(product); // Insert a new product
+  Future updateProduct(Product product) =>
+      update(products).replace(product); // Update an existing product
+  Future deleteProduct(Product product) =>
+      delete(products).delete(product); // Delete a product
+
+  // Orders commands
+  Future<List<Order>> get allOrdersEntries => select(orders).get();
+  Future insertOrder(Order order) => into(orders).insert(order);
+  Future updateOrder(Order order) => update(orders).replace(order);
+  Future deleteOrder(Order order) => delete(orders).delete(order);
 }
 
 LazyDatabase _openConnection() {
