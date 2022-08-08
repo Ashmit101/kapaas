@@ -70,10 +70,25 @@ class KapaasDatabase extends _$KapaasDatabase {
       delete(products).delete(product); // Delete a product
 
   // Orders commands
-  Future<List<Order>> get allOrdersEntries => select(orders).get();
-  Future insertOrder(Order order) => into(orders).insert(order);
-  Future updateOrder(Order order) => update(orders).replace(order);
-  Future deleteOrder(Order order) => delete(orders).delete(order);
+  Future<List<Order>> get allOrdersEntries =>
+      select(orders).get(); // Get all the stored orders
+  Future insertOrder(Order order) =>
+      into(orders).insert(order); // Insert a new order
+  Future updateOrder(Order order) =>
+      update(orders).replace(order); // Update an existing order
+  Future deleteOrder(Order order) =>
+      delete(orders).delete(order); // Delete an order
+
+  //Measurements commands
+  Future<List<Measurement>> get allMeasurementEntries =>
+      select(measurements).get(); // Get all the stored measurements
+  Future insertMeasurement(Measurement measurement) =>
+      into(measurements).insert(measurement); // Insert a new measurement
+  Future updateMeasurement(Measurement measurement) => update(measurements)
+      .replace(measurement); // Update an existing measurement
+  Future deleteMeasurement(Measurement measurement) =>
+      delete(measurements).delete(measurement); // Delete a measurement
+
 }
 
 LazyDatabase _openConnection() {
