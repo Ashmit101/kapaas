@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kapaas/database/tables.dart';
+import 'package:provider/provider.dart';
 
 class MeasurementsForm extends StatefulWidget {
   final int customerId;
@@ -114,6 +116,18 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                         var arm = armController.text as double;
                         var hip = hipController.text as double;
                         var wrist = wristController.text as double;
+
+                        final database = Provider.of<KapaasDatabase>(context);
+
+                        final measurement = Measurement(
+                            customerId: id,
+                            neck: neck,
+                            waist: waist,
+                            arm: arm,
+                            hip: hip,
+                            wrist: wrist);
+                        database.insertMeasurement(measurement);
+                        goBackToCustomersList();
                       }
                     }),
                     child: const Text('Save')),
@@ -123,5 +137,9 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
         ),
       ),
     );
+  }
+
+  void goBackToCustomersList() {
+    Navigator.pop(context, true);
   }
 }
