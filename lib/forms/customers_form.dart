@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kapaas/database/db_helper.dart';
-import 'package:kapaas/entities/customer.dart';
+import 'package:kapaas/database/tables.dart';
+import 'package:provider/provider.dart';
+// import 'package:kapaas/entities/customer.dart';
 
-DbHelper _dbHelper = DbHelper();
+// DbHelper _dbHelper = DbHelper();
 
 class CustomersForm extends StatefulWidget {
   const CustomersForm({Key? key}) : super(key: key);
@@ -64,15 +65,16 @@ class _CustomerFormState extends State<CustomersForm> {
               child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      final database =
+                          Provider.of<KapaasDatabase>(context, listen: false);
+
                       //Info correct
                       var name = nameController.text;
                       var phone = phoneController.text;
 
-                      Customer customer = Customer(name, phone);
-                      int id = await _dbHelper.saveCustomer(customer);
-
-                      print("Customer saved with ID: $id");
-
+                      final customer = Customer(name: name, phone: phone);
+                      // // int id = await _dbHelper.saveCustomer(customer);
+                      database.insertCustomer(customer);
                       goBackToListPage(context);
                     }
                   },

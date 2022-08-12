@@ -1,11 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
+import 'package:kapaas/forms/products_form.dart';
 import 'screens/employees.dart';
+import 'screens/about.dart';
+
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,19 +21,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kapaas',
-      theme: ThemeData.dark(),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const MyHomePage(title: 'Kapaas'),
-        '/customers': (context) => const CustomerScreen(),
-        '/customers/form': (context) => const CustomersForm(),
-        
-        '/products':(context) => const ProductScreen(),
+    return Provider(
+      create: (_) => KapaasDatabase(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Kapaas',
+        theme: ThemeData.light(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const MyHomePage(title: 'Kapaas'), // default home:
+          '/customers': (context) => const CustomerScreen(),
+          '/customers/form': (context) => const CustomersForm(),
 
-        '/employees': (context) => const EmployeeScreen(),
-      },
+          '/products': (context) => const ProductScreen(),
+          '/products/form': (context) => const ProductsForm(),
+
+          '/employees': (context) => const EmployeeScreen(),
+          '/about': (context) => const AboutScreen(),
+        },
+      ),
     );
   }
 }
@@ -61,20 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
       
       body: Column(
         children: [
-          Container(
-            alignment:FractionalOffset.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(height:10),
-                Image.asset('assets/logo.png', width:80, height:80),
-                const SizedBox(height:10),
-                const Text("Kapaas",style: TextStyle(fontSize:28)),
-                const Text("A BOUTIQUE DATABASE MANAGEMENT SYSYEM", style: TextStyle(fontSize:6),),
-                const SizedBox(height:10),
-              ],
-            )
-          ),
           Container(
           margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: CarouselSlider.builder(
@@ -179,7 +176,8 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: const Icon(Icons.info_outline_rounded),
               title: const Text('About', style: TextStyle(fontSize: 16)),
               onTap: (() {
-                // Go to Employee page
+                // Go to About page
+                navigateTo(Screens.about);
               }),
             )
           ],
@@ -209,6 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       case Screens.about:
         // TODO: Handle this case.
+        Navigator.pushNamed(context, '/about');
         break;
     }
   }
