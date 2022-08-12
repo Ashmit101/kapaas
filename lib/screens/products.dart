@@ -59,14 +59,14 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "New Collections",
                       style: TextStyle(
                           fontSize: 25,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Row(
@@ -91,7 +91,7 @@ class _ProductScreenState extends State<ProductScreen> {
             )
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         Padding(
@@ -113,7 +113,7 @@ class _ProductScreenState extends State<ProductScreen> {
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         SingleChildScrollView(
@@ -123,11 +123,14 @@ class _ProductScreenState extends State<ProductScreen> {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => Products(
-                              title: categories[index]['title'] as String,
-                              img: categories[index]['imgUrl'] as String)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => Products(
+                        title: categories[index]['title'] as String,
+                        img: categories[index]['imgUrl'] as String
+                      )
+                    )
+                  );
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15),
