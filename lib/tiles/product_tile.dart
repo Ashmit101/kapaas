@@ -1,8 +1,5 @@
 import 'package:kapaas/database/json/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:kapaas/database/tables.dart';
 
 class Products extends StatefulWidget {
   const Products({Key? key, required this.title, required this.img})
@@ -15,54 +12,53 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-
   List<Map<String, String>>? subCategory;
 
-  void selectSubCategory(){
-    switch( widget.title ) {
-      case 'Lehenga': 
-      subCategory = catLehenga;
-      break;
+  void selectSubCategory() {
+    switch (widget.title) {
+      case 'Lehenga':
+        subCategory = catLehenga;
+        break;
 
-      case 'Kurtha': 
-      subCategory = catKurtha;
-      break;
+      case 'Kurtha':
+        subCategory = catKurtha;
+        break;
 
-      case 'Saree': 
-      subCategory = catSaree;
-      break;
+      case 'Saree':
+        subCategory = catSaree;
+        break;
 
-      case 'Blouse': 
-      subCategory = catBlouse;
-      break;
+      case 'Blouse':
+        subCategory = catBlouse;
+        break;
 
-      case 'Gowns': 
-      subCategory = catGown;
-      break;
+      case 'Gowns':
+        subCategory = catGown;
+        break;
 
-      case 'One Piece': 
-      subCategory = catOnePiece;
-      break;
+      case 'One Piece':
+        subCategory = catOnePiece;
+        break;
 
-      case 'Chaubandi': 
-      subCategory = catChaubandi;
-      break;
+      case 'Chaubandi':
+        subCategory = catChaubandi;
+        break;
 
-      case 'Daura Surwar': 
-      subCategory = catDauraSurwar;
-      break;
+      case 'Daura Surwar':
+        subCategory = catDauraSurwar;
+        break;
 
-      case 'Jens Kurtha': 
-      subCategory = catJensKurtha;
-      break;
+      case 'Jens Kurtha':
+        subCategory = catJensKurtha;
+        break;
 
-      case 'Suit': 
-      subCategory = catSuit;
-      break;
+      case 'Suit':
+        subCategory = catSuit;
+        break;
 
-      case 'Shirt Pant': 
-      subCategory = catShirtPant;
-      break;
+      case 'Shirt Pant':
+        subCategory = catShirtPant;
+        break;
     }
   }
 
@@ -90,7 +86,7 @@ class _ProductsState extends State<Products> {
                 ),
               ),
               Container(
-                child: Column(
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -106,7 +102,7 @@ class _ProductsState extends State<Products> {
                         },
                       ),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.more_vert_rounded,
                           color: Colors.white,
                         ),
@@ -114,7 +110,7 @@ class _ProductsState extends State<Products> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 170,
                   ),
                   Column(
@@ -124,7 +120,7 @@ class _ProductsState extends State<Products> {
                         padding: const EdgeInsets.only(left: 15),
                         child: Text(
                           widget.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(255, 82, 80, 80),
@@ -140,9 +136,9 @@ class _ProductsState extends State<Products> {
           Flexible(
             fit: FlexFit.loose,
             child: Padding(
-              padding: EdgeInsets.all(15),
-              child: GridView.builder(          
-                physics: ScrollPhysics(), 
+              padding: const EdgeInsets.all(15),
+              child: GridView.builder(
+                physics: const ScrollPhysics(),
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -153,37 +149,34 @@ class _ProductsState extends State<Products> {
                   return Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(subCategory?[index]['imgUrl'] as String), fit: BoxFit.cover,
+                        image:
+                            AssetImage(subCategory?[index]['imgUrl'] as String),
+                        fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Container(
-                      margin: EdgeInsets.only(top:115),
+                      margin: const EdgeInsets.only(top: 115),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(100,0,0,0),
+                        color: const Color.fromARGB(100, 0, 0, 0),
                         border: Border.all(),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start ,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Container(
-                            // padding: const EdgeInsets.only(top:110),
-                            child:Text(
-                                subCategory?[index]['title'] as String,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255,255,255,255),
-                                ),
+                          Text(
+                            subCategory?[index]['title'] as String,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
-                          Container(
-                            child:Text(
-                                subCategory?[index]['price'] as String,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255,255,255,255),
-                                ),
+                          Text(
+                            subCategory?[index]['price'] as String,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                           ),
                         ],
@@ -197,7 +190,6 @@ class _ProductsState extends State<Products> {
         ]));
   }
 }
-import 'package:flutter/material.dart';
 
 class ProductTile extends StatelessWidget {
   final int id;
@@ -206,7 +198,7 @@ class ProductTile extends StatelessWidget {
   final String imageSource = "assets/images/products/default.png";
 
   const ProductTile(
-    {super.key, required this.name, required this.price, required this.id});
+      {super.key, required this.name, required this.price, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -217,26 +209,27 @@ class ProductTile extends StatelessWidget {
       //   subtitle: Text(price.toString()),
       // ),
       child: ListBody(
-          children: [
-            const SizedBox(height: 20),
-            Text(
-              name, 
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+        children: [
+          const SizedBox(height: 20),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
             ),
-            Image.asset(imageSource, width: MediaQuery.of(context).size.width, height: 250),
-            Text(
-              "NR. ${price.toString()}", 
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-              textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
+          ),
+          Image.asset(imageSource,
+              width: MediaQuery.of(context).size.width, height: 250),
+          Text(
+            "NR. ${price.toString()}",
+            style: const TextStyle(
+              fontSize: 20,
             ),
-            const SizedBox(height:20),
-          ],
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
