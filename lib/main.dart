@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
@@ -8,6 +9,8 @@ import 'screens/products.dart';
 import 'package:kapaas/forms/products_form.dart';
 import 'screens/employees.dart';
 import 'screens/about.dart';
+
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,21 +21,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Kapaas',
-      theme: ThemeData.light(),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const MyHomePage(title: 'Kapaas'), // default home:
-        '/customers': (context) => const CustomerScreen(),
-        '/customers/form': (context) => const CustomersForm(),
+    return Provider(
+      create: (_) => KapaasDatabase(),
+      child: MaterialApp(
+        title: 'Kapaas',
+        theme: ThemeData.light(),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const MyHomePage(title: 'Kapaas'), // default home:
+          '/customers': (context) => const CustomerScreen(),
+          '/customers/form': (context) => const CustomersForm(),
 
-        '/products': (context) => const ProductScreen(),
-        '/products/form': (context) => const ProductsForm(),
+          '/products': (context) => const ProductScreen(),
+          '/products/form': (context) => const ProductsForm(),
 
-        '/employees': (context) => const EmployeeScreen(),
-        '/about': (context) => const AboutScreen(),
-      },
+          '/employees': (context) => const EmployeeScreen(),
+          '/about': (context) => const AboutScreen(),
+        },
+      ),
     );
   }
 }
@@ -176,18 +182,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // TODO: Handle this case.
         break;
       case Screens.products:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/products');
         break;
       case Screens.payments:
         // TODO: Handle this case.
         break;
       case Screens.employees:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/employees');
         break;
       case Screens.about:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/about');
         break;
     }
