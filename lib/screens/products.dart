@@ -30,24 +30,6 @@ class _ProductScreenState extends State<ProductScreen> {
         title: const Text('Products'),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: GestureDetector(
-              onTap: (() async {
-                bool succeeded =
-                    await Navigator.pushNamed(context, '/products/form')
-                        as bool;
-
-                if (succeeded) {
-                  // refreshProductData();
-                }
-              }),
-              child: const Icon(
-                Icons.add,
-                size: 26,
-              ),
-            ),
-          ),
-          Padding(
               padding: const EdgeInsets.only(right: 20),
               child: GestureDetector(
                 onTap: () {},
@@ -106,7 +88,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       height: 8,
                     ),
                     Row(
-                      children: [
+                      children: const [
                         Text(
                           "DISCOVER",
                           style: TextStyle(
@@ -135,7 +117,7 @@ class _ProductScreenState extends State<ProductScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Categories",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
@@ -206,7 +188,7 @@ class _ProductScreenState extends State<ProductScreen> {
             }),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
       ],

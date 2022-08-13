@@ -6,7 +6,6 @@ import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
-import 'package:kapaas/forms/products_form.dart';
 import 'screens/employees.dart';
 import 'screens/about.dart';
 
@@ -34,7 +33,6 @@ class MyApp extends StatelessWidget {
           '/customers/form': (context) => const CustomersForm(),
 
           '/products': (context) => const ProductScreen(),
-          '/products/form': (context) => const ProductsForm(),
 
           '/employees': (context) => const EmployeeScreen(),
           '/about': (context) => const AboutScreen(),
@@ -67,10 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-     
-      body: Column(
-        children: [
-          Container(
+
+      body: Column(children: [
+        Container(
           margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: CarouselSlider.builder(
             itemCount: imageList.length,
