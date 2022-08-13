@@ -30,10 +30,12 @@ dependencies:
   flutter:
     sdk: flutter
   path: ^1.8.1
-  drift: ^1.7.1
-  provider: ^6.0.3
-  path_provider: ^2.0.11
   carousel_slider: ^4.1.1
+  drift: ^1.7.1
+  sqlite3_flutter_libs: ^0.5.9
+  path_provider: ^2.0.11
+  provider: ^6.0.3
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,6 +43,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   splashscreen: ^1.3.5
   font_awesome_flutter: ^10.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +76,9 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/products/
+    - lib/images/Kapaas.png
+    - lib/images/blue_fabric.jpg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

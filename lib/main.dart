@@ -54,7 +54,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final List<String> imageList = [
     'assets/images/marina-abrosimova-S-T0FPEnGZM-unsplash.jpg',
     'assets/images/ayrton-bR4BzKRZSDo-unsplash.jpg',
@@ -65,11 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      
+     
       body: Column(
         children: [
           Container(
@@ -77,62 +75,53 @@ class _MyHomePageState extends State<MyHomePage> {
           child: CarouselSlider.builder(
             itemCount: imageList.length,
             options: CarouselOptions(
-              enlargeCenterPage: true,
-              height:200,
               autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayInterval: const Duration(seconds: 10),
+              viewportFraction: 1,
               reverse: false,
-              aspectRatio: 5.0,
+              aspectRatio: 2,
             ),
-            itemBuilder: (context, i, id){
+            itemBuilder: (context, i, id) {
               return GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.white,)
-                  ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child:Image.asset(
-                        imageList[i],
-                        width: 500,
-                        fit: BoxFit.cover,
-                    ),
-                  )
+                child: Image.asset(
+                  imageList[i],
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.cover,
                 ),
-              );
+              ));
             },
           ),
         ),
-        const SizedBox(height:20),
+        const SizedBox(height: 20),
         ElevatedButton.icon(
-          onPressed: () {}, 
-          icon: const Icon(Icons.add_shopping_cart_rounded), 
+          onPressed: () {},
+          icon: const Icon(Icons.add_shopping_cart_rounded),
           label: const Text('Place Order Now!'),
         )
-        ]
-      ),
-
-
+      ]),
+      drawerScrimColor: Color.fromARGB(200, 0, 0, 0),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
       drawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.75, // 75% width
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            SizedBox(
-              height:150,
-              child: DrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(90, 29, 185, 196),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset('assets/logo.png', width:50, height:50,),
-                      const SizedBox(width:20), //Spacing
-                      const Text("Kapaas", style: TextStyle(fontSize: 28),),
-                    ],
-                  ),
-                ),
+            Container(
+              color: Colors.blue,
+              height: 35,
+            ),
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Colors.blue,
+                  image: DecorationImage(
+                    image: AssetImage('lib/images/Kapaas.png'),
+                  )),
+              child: Center(child: Text(' ')),
             ),
             ListTile(
               leading: const Icon(Icons.account_circle),
@@ -195,18 +184,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // TODO: Handle this case.
         break;
       case Screens.products:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/products');
         break;
       case Screens.payments:
         // TODO: Handle this case.
         break;
       case Screens.employees:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/employees');
         break;
       case Screens.about:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/about');
         break;
     }

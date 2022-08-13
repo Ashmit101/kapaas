@@ -42,7 +42,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.9.0"
+    version: "2.8.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -120,6 +120,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
+
   charcode:
     dependency: transitive
     description:
@@ -263,6 +264,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "10.1.0"
+
   frontend_server_client:
     dependency: transitive
     description:
@@ -353,7 +355,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.4"
   meta:
     dependency: transitive
     description:
@@ -361,6 +363,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+
   mime:
     dependency: transitive
     description:
@@ -535,6 +538,7 @@ packages:
     source: hosted
     version: "1.9.0"
   splashscreen:
+
     dependency: "direct main"
     description:
       name: splashscreen
@@ -548,6 +552,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.2"
+  sqlparser:
+    dependency: transitive
+    description:
+      name: sqlparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1+1"
+  sqlite3:
+    dependency: transitive
+    description:
+      name: sqlite3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.2"
+  sqlite3_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: sqlite3_flutter_libs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.9"
   sqlparser:
     dependency: transitive
     description:
@@ -577,6 +602,7 @@ packages:
     source: hosted
     version: "2.0.0"
   string_scanner:
+
     dependency: transitive
     description:
       name: string_scanner
