@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     return Provider(
       create: (_) => KapaasDatabase(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Kapaas',
         theme: ThemeData.light(),
         initialRoute: '/',
@@ -66,9 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-
-      body: Column(children: [
-        Container(
+     
+      body: Column(
+        children: [
+          Container(
           margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
           child: CarouselSlider.builder(
             itemCount: imageList.length,
@@ -163,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: const Icon(Icons.info_outline_rounded),
               title: const Text('About', style: TextStyle(fontSize: 16)),
               onTap: (() {
-                // Go to Employee page
+                // Go to About page
                 navigateTo(Screens.about);
               }),
             )
