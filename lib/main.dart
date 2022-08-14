@@ -7,7 +7,6 @@ import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
-import 'package:kapaas/forms/products_form.dart';
 import 'screens/employees.dart';
 import 'screens/about.dart';
 
@@ -25,6 +24,7 @@ class MyApp extends StatelessWidget {
     return Provider(
       create: (_) => KapaasDatabase(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Kapaas',
         theme: ThemeData.light(),
         initialRoute: '/',
@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
           '/customers/form': (context) => const CustomersForm(),
 
           '/products': (context) => const ProductScreen(),
-          '/products/form': (context) => const ProductsForm(),
 
           '/employees': (context) => const EmployeeScreen(),
           '/about': (context) => const AboutScreen(),
@@ -168,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: const Icon(Icons.info_outline_rounded),
               title: const Text('About', style: TextStyle(fontSize: 16)),
               onTap: (() {
-                // Go to Employee page
+                // Go to About page
                 navigateTo(Screens.about);
               }),
             )

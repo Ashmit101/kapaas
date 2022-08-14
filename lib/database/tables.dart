@@ -59,16 +59,6 @@ class KapaasDatabase extends _$KapaasDatabase {
   Future deleteCustomer(Customer customer) =>
       delete(customers).delete(customer); // Delete a customer
 
-  // Products commands
-  Future<List<Product>> get allProductsEntries =>
-      select(products).get(); // Get all the stored products
-  Future insertProduct(Product product) =>
-      into(products).insert(product); // Insert a new product
-  Future updateProduct(Product product) =>
-      update(products).replace(product); // Update an existing product
-  Future deleteProduct(Product product) =>
-      delete(products).delete(product); // Delete a product
-
   // Orders commands
   Future<List<Order>> get allOrdersEntries =>
       select(orders).get(); // Get all the stored orders
