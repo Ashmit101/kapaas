@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kapaas/database/tables.dart';
+import 'package:provider/provider.dart';
 
 class EmployeesForm extends StatefulWidget {
   const EmployeesForm({Key? key}) : super(key: key);
@@ -54,6 +56,26 @@ class _EmployeesFormState extends State<EmployeesForm> {
                 return null;
               })),
             ),
+            ElevatedButton(
+                onPressed: (() {
+                  if (_formKey.currentState!.validate()) {
+                    //Input values are good!
+
+                    final name = nameController.text;
+                    final salary = double.parse(salaryController.text);
+
+                    final employee = Employee(name: name, salary: salary);
+
+                    final database =
+                        Provider.of<KapaasDatabase>(context, listen: false);
+
+                    database.insertEmployee(employee);
+
+                    //Go back to the list
+                    Navigator.pop(context, true);
+                  }
+                }),
+                child: const Text('Save'))
           ],
         ),
       ),

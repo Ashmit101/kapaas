@@ -1007,13 +1007,16 @@ class $MeasurementsTable extends Measurements
 class Employee extends DataClass implements Insertable<Employee> {
   final int? id;
   final double salary;
-  Employee({this.id, required this.salary});
+  final String name;
+  Employee({this.id, required this.salary, required this.name});
   factory Employee.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Employee(
       id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
       salary: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}salary'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
     );
   }
   @override
@@ -1023,6 +1026,7 @@ class Employee extends DataClass implements Insertable<Employee> {
       map['id'] = Variable<int?>(id);
     }
     map['salary'] = Variable<double>(salary);
+    map['name'] = Variable<String>(name);
     return map;
   }
 
@@ -1030,6 +1034,7 @@ class Employee extends DataClass implements Insertable<Employee> {
     return EmployeesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       salary: Value(salary),
+      name: Value(name),
     );
   }
 
@@ -1039,6 +1044,7 @@ class Employee extends DataClass implements Insertable<Employee> {
     return Employee(
       id: serializer.fromJson<int?>(json['id']),
       salary: serializer.fromJson<double>(json['salary']),
+      name: serializer.fromJson<String>(json['name']),
     );
   }
   @override
@@ -1047,55 +1053,69 @@ class Employee extends DataClass implements Insertable<Employee> {
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
       'salary': serializer.toJson<double>(salary),
+      'name': serializer.toJson<String>(name),
     };
   }
 
-  Employee copyWith({int? id, double? salary}) => Employee(
+  Employee copyWith({int? id, double? salary, String? name}) => Employee(
         id: id ?? this.id,
         salary: salary ?? this.salary,
+        name: name ?? this.name,
       );
   @override
   String toString() {
     return (StringBuffer('Employee(')
           ..write('id: $id, ')
-          ..write('salary: $salary')
+          ..write('salary: $salary, ')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, salary);
+  int get hashCode => Object.hash(id, salary, name);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Employee && other.id == this.id && other.salary == this.salary);
+      (other is Employee &&
+          other.id == this.id &&
+          other.salary == this.salary &&
+          other.name == this.name);
 }
 
 class EmployeesCompanion extends UpdateCompanion<Employee> {
   final Value<int?> id;
   final Value<double> salary;
+  final Value<String> name;
   const EmployeesCompanion({
     this.id = const Value.absent(),
     this.salary = const Value.absent(),
+    this.name = const Value.absent(),
   });
   EmployeesCompanion.insert({
     this.id = const Value.absent(),
     required double salary,
-  }) : salary = Value(salary);
+    required String name,
+  })  : salary = Value(salary),
+        name = Value(name);
   static Insertable<Employee> custom({
     Expression<int?>? id,
     Expression<double>? salary,
+    Expression<String>? name,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (salary != null) 'salary': salary,
+      if (name != null) 'name': name,
     });
   }
 
-  EmployeesCompanion copyWith({Value<int?>? id, Value<double>? salary}) {
+  EmployeesCompanion copyWith(
+      {Value<int?>? id, Value<double>? salary, Value<String>? name}) {
     return EmployeesCompanion(
       id: id ?? this.id,
       salary: salary ?? this.salary,
+      name: name ?? this.name,
     );
   }
 
@@ -1108,6 +1128,9 @@ class EmployeesCompanion extends UpdateCompanion<Employee> {
     if (salary.present) {
       map['salary'] = Variable<double>(salary.value);
     }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
     return map;
   }
 
@@ -1115,7 +1138,8 @@ class EmployeesCompanion extends UpdateCompanion<Employee> {
   String toString() {
     return (StringBuffer('EmployeesCompanion(')
           ..write('id: $id, ')
-          ..write('salary: $salary')
+          ..write('salary: $salary, ')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
@@ -1139,8 +1163,15 @@ class $EmployeesTable extends Employees
   late final GeneratedColumn<double?> salary = GeneratedColumn<double?>(
       'salary', aliasedName, false,
       type: const RealType(), requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  List<GeneratedColumn> get $columns => [id, salary];
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 32),
+      type: const StringType(),
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, salary, name];
   @override
   String get aliasedName => _alias ?? 'employees';
   @override
@@ -1158,6 +1189,12 @@ class $EmployeesTable extends Employees
           salary.isAcceptableOrUnknown(data['salary']!, _salaryMeta));
     } else if (isInserting) {
       context.missing(_salaryMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
     }
     return context;
   }
