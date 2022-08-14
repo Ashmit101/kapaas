@@ -39,6 +39,7 @@ class Measurements extends Table {
 class Employees extends Table {
   IntColumn get id => integer().autoIncrement().nullable()();
   RealColumn get salary => real()();
+  TextColumn get name => text().withLength(max: 32)();
 }
 
 @DriftDatabase(tables: [Customers, Products, Orders, Measurements, Employees])
