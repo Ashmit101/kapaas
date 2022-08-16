@@ -4,6 +4,7 @@ import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/forms/customers_form.dart';
 import 'package:kapaas/forms/employees_form.dart';
 import 'package:kapaas/forms/measurements_form.dart';
+import 'package:kapaas/forms/order_form.dart';
 import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
@@ -40,6 +41,8 @@ class MyApp extends StatelessWidget {
           '/employees/form': (context) => const EmployeesForm(),
 
           '/about': (context) => const AboutScreen(),
+
+          '/orders/form': (context) => const OrderForm(),
 
           '/customers/measurements/form': (context) => const MeasurementsForm(
                 customerId: 0,
@@ -100,7 +103,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         const SizedBox(height: 20),
         ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/orders/form');
+          },
           icon: const Icon(Icons.add_shopping_cart_rounded),
           label: const Text('Place Order Now!'),
         )

@@ -1,9 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:kapaas/database/json/constants.dart';
-import 'package:kapaas/tiles/product_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/tiles/product_tile.dart' as product_tile;
-import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -24,6 +23,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool ordering = ModalRoute.of(context)!.settings.arguments as bool;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -37,11 +38,11 @@ class _ProductScreenState extends State<ProductScreen> {
               )),
         ],
       ),
-      body: getBody(),
+      body: getBody(ordering),
     );
   }
 
-  Widget getBody() {
+  Widget getBody(bool ordering) {
     var size = MediaQuery.of(context).size;
     return ListView(
       controller: ScrollController(),
@@ -57,19 +58,6 @@ class _ProductScreenState extends State<ProductScreen> {
                   image: DecorationImage(
                       image: AssetImage(homeImg), fit: BoxFit.cover)),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 8, right: 10),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.end,
-            //     children: [
-            //       Icon(Icons.favorite, color: Colors.white, size: 26),
-            //       SizedBox(
-            //         width: 10,
-            //       ),
-            //       Icon(Icons.search, color: Colors.white, size: 26)
-            //     ],
-            //   ),
-            // ),
             Positioned(
               bottom: 20,
               child: Padding(
@@ -139,13 +127,26 @@ class _ProductScreenState extends State<ProductScreen> {
           child: Row(
             children: List.generate(categories.length, (index) {
               return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
+                onTap: () async {
+                  if (ordering) {
+                    int productId = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
                           builder: (_) => product_tile.Products(
-                              title: categories[index]['title'] as String,
-                              img: categories[index]['imgUrl'] as String)));
+                            title: categories[index]['title'] as String,
+                            img: categories[index]['imgUrl'] as String,
+                            ordering: true,
+                          ),
+                        )) as int;
+                    Navigator.pop(context, productId);
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => product_tile.Products(
+                                title: categories[index]['title'] as String,
+                                img: categories[index]['imgUrl'] as String)));
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15),
