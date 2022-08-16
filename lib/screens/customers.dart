@@ -33,10 +33,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: (() async {
           //DO something
-          bool succeeded =
-              await Navigator.pushNamed(context, '/customers/form') as bool;
+          bool? succeeded =
+              await Navigator.pushNamed(context, '/customers/form') as bool?;
 
-          if (succeeded) {
+          if (succeeded != null && succeeded == true) {
             refreshCustomerData();
           }
         }),

@@ -14,16 +14,10 @@ class Customers extends Table {
   TextColumn get phone => text().withLength(max: 10)();
 }
 
-class Products extends Table {
-  IntColumn get id => integer().autoIncrement().nullable()();
-  TextColumn get name => text().withLength(max: 10)();
-  IntColumn get price => integer()();
-}
-
 class Orders extends Table {
   IntColumn get id => integer().autoIncrement().nullable()();
   DateTimeColumn get deadline => dateTime()();
-  IntColumn get productId => integer().references(Products, #id)();
+  IntColumn get productId => integer()();
   IntColumn get customerId => integer().references(Customers, #id)();
 }
 
@@ -42,7 +36,7 @@ class Employees extends Table {
   TextColumn get name => text().withLength(max: 32)();
 }
 
-@DriftDatabase(tables: [Customers, Products, Orders, Measurements, Employees])
+@DriftDatabase(tables: [Customers, Orders, Measurements, Employees])
 class KapaasDatabase extends _$KapaasDatabase {
   //Tell the database where to store the data with this constructor
   KapaasDatabase() : super(_openConnection());
@@ -98,3 +92,5 @@ LazyDatabase _openConnection() {
     return NativeDatabase(file);
   });
 }
+
+enum DatabaseOptions { delete, edit }

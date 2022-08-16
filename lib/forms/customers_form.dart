@@ -10,12 +10,23 @@ class CustomersForm extends StatefulWidget {
 }
 
 class _CustomerFormState extends State<CustomersForm> {
+  bool updateData = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    Customer? customerData =
+        ModalRoute.of(context)!.settings.arguments as Customer?;
+
+    nameController.text = customerData?.name ?? "";
+    phoneController.text = customerData?.phone ?? "";
+
+    if (customerData != null) {
+      updateData = true;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Enter Customer Data'),
@@ -69,8 +80,17 @@ class _CustomerFormState extends State<CustomersForm> {
                       var name = nameController.text;
                       var phone = phoneController.text;
 
-                      final customer = Customer(name: name, phone: phone);
-                      database.insertCustomer(customer);
+                      Customer customer;
+
+                      if (updateData) {
+                        customer = Customer(
+                            name: name, phone: phone, id: customerData!.id);
+                        database.updateCustomer(customer);
+                      } else {
+                        customer = Customer(name: name, phone: phone);
+                        database.insertCustomer(customer);
+                      }
+
                       goBackToListPage(context);
                     }
                   },

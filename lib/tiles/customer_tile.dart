@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../database/tables.dart';
 
 class CustomerTile extends StatelessWidget {
   final int id;
@@ -15,7 +17,46 @@ class CustomerTile extends StatelessWidget {
         leading: Text(id.toString()),
         title: Text(name),
         subtitle: Text(contact),
+        trailing: PopupMenuButton<DatabaseOptions>(
+          itemBuilder: (context) => <PopupMenuEntry<DatabaseOptions>>[
+            const PopupMenuItem(
+              value: DatabaseOptions.delete,
+              child: Text('Delete'),
+            ),
+            const PopupMenuItem(
+              value: DatabaseOptions.edit,
+              child: Text('Update'),
+            )
+          ],
+          onSelected: (value) {
+            final customer = Customer(name: name, phone: contact, id: id);
+            final database =
+                Provider.of<KapaasDatabase>(context, listen: false);
+            switch (value) {
+              case DatabaseOptions.delete:
+                database.deleteCustomer(customer);
+                refreshCustomersList(context);
+                break;
+              case DatabaseOptions.edit:
+                updateCustomer(context, customer);
+                break;
+              default:
+            }
+          },
+        ),
       ),
     );
+  }
+
+  void updateCustomer(BuildContext context, Customer customer) async {
+    bool succeeded = await Navigator.pushNamed(context, '/customers/form',
+        arguments: customer) as bool;
+    if (succeeded) {
+      refreshCustomersList(context);
+    }
+  }
+
+  void refreshCustomersList(BuildContext context) {
+    Navigator.popAndPushNamed(context, '/customers');
   }
 }
