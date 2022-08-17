@@ -11,17 +11,18 @@ class OrderForm extends StatefulWidget {
 }
 
 class _OrderFormState extends State<OrderForm> {
+  Customer? dropdownValue;
+
+  int? customerId;
+  int? productId;
+  DateTime? deadline;
+
   @override
   Widget build(BuildContext context) {
     final database = Provider.of<KapaasDatabase>(context);
 
     var storedCustomersData = database.allCustomerEntries;
     var config = CalendarDatePicker2WithActionButtonsConfig();
-
-    Customer dropdownValue;
-
-    int customerId;
-    int productId;
 
     return FutureBuilder(
         future: storedCustomersData,
@@ -34,12 +35,17 @@ class _OrderFormState extends State<OrderForm> {
                   title: const Text('Enter order details'),
                 ),
                 body: Column(
+                  // Choose a customer
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     DropdownButton<Customer>(
+                      value: dropdownValue,
                       icon: const Icon(Icons.person),
                       onChanged: (value) {
-                        setState(() {});
+                        print('Chosen customer : $value');
+                        setState(() {
+                          dropdownValue = value;
+                        });
                         customerId = value?.id ?? 0;
                       },
                       hint: const Text('Customer'),
@@ -75,15 +81,30 @@ class _OrderFormState extends State<OrderForm> {
                           if (results != null && results.isNotEmpty) {
                             print("Results type : ${results.runtimeType}");
                             print(_getValueText(config.calendarType, results));
+                            deadline = results[0];
                           }
                         },
                         child: const Text('Deadline'),
                       ),
                     ),
+                    // Place the order
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (deadline != null &&
+                              productId != null &&
+                              customerId != null) {
+                            final order = Order(
+                                deadline: deadline as DateTime,
+                                productId: productId as int,
+                                customerId: customerId as int);
+                            print('Placed order : $order');
+                            database.insertOrder(order);
+
+                            Navigator.pop(context);
+                          }
+                        },
                         child: const Text('Place'),
                       ),
                     )

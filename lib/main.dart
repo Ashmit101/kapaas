@@ -6,6 +6,7 @@ import 'package:kapaas/forms/employees_form.dart';
 import 'package:kapaas/forms/measurements_form.dart';
 import 'package:kapaas/forms/order_form.dart';
 import 'package:kapaas/screens/customers.dart';
+import 'package:kapaas/screens/orders.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
 
           '/about': (context) => const AboutScreen(),
 
+          '/orders': (context) => const OrderScreen(),
           '/orders/form': (context) => const OrderForm(),
 
           '/customers/measurements/form': (context) => const MeasurementsForm(
@@ -146,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Orders', style: TextStyle(fontSize: 16)),
               onTap: (() {
                 // Go to customers page
+                navigateTo(Screens.orders);
               }),
             ),
             ListTile(
@@ -191,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.pushNamed(context, '/customers');
         break;
       case Screens.orders:
-        // TODO: Handle this case.
+        Navigator.pushNamed(context, '/orders');
         break;
       case Screens.products:
         Navigator.pushNamed(context, '/products');

@@ -23,7 +23,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool ordering = ModalRoute.of(context)!.settings.arguments as bool;
+    bool? ordering = ModalRoute.of(context)!.settings.arguments as bool?;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -42,7 +42,7 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Widget getBody(bool ordering) {
+  Widget getBody(bool? ordering) {
     var size = MediaQuery.of(context).size;
     return ListView(
       controller: ScrollController(),
@@ -128,7 +128,7 @@ class _ProductScreenState extends State<ProductScreen> {
             children: List.generate(categories.length, (index) {
               return GestureDetector(
                 onTap: () async {
-                  if (ordering) {
+                  if (ordering ?? false) {
                     int productId = await Navigator.push(
                         context,
                         MaterialPageRoute(
