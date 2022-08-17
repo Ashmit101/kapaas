@@ -1,3 +1,4 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../database/tables.dart';
@@ -15,6 +16,7 @@ class _OrderFormState extends State<OrderForm> {
     final database = Provider.of<KapaasDatabase>(context);
 
     var storedCustomersData = database.allCustomerEntries;
+    var config = CalendarDatePicker2WithActionButtonsConfig();
 
     Customer dropdownValue;
 
@@ -38,6 +40,7 @@ class _OrderFormState extends State<OrderForm> {
                       icon: const Icon(Icons.person),
                       onChanged: (value) {
                         setState(() {});
+                        customerId = value?.id ?? 0;
                       },
                       hint: const Text('Customer'),
                       items: customers
@@ -60,6 +63,23 @@ class _OrderFormState extends State<OrderForm> {
                         child: const Text('Choose Product'),
                       ),
                     ),
+                    //Date Picker
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          var results = await showCalendarDatePicker2Dialog(
+                              context: context,
+                              config: config,
+                              dialogSize: const Size(325, 400));
+                          if (results != null && results.isNotEmpty) {
+                            print("Results type : ${results.runtimeType}");
+                            print(_getValueText(config.calendarType, results));
+                          }
+                        },
+                        child: const Text('Deadline'),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
@@ -76,5 +96,34 @@ class _OrderFormState extends State<OrderForm> {
             child: CircularProgressIndicator(),
           );
         });
+  }
+
+  String _getValueText(
+    CalendarDatePicker2Type datePickerType,
+    List<DateTime?> values,
+  ) {
+    var valueText = (values.isNotEmpty ? values[0] : null)
+        .toString()
+        .replaceAll('00:00:00.000', '');
+
+    if (datePickerType == CalendarDatePicker2Type.multi) {
+      valueText = values.isNotEmpty
+          ? values
+              .map((v) => v.toString().replaceAll('00:00:00.000', ''))
+              .join(', ')
+          : 'null';
+    } else if (datePickerType == CalendarDatePicker2Type.range) {
+      if (values.isNotEmpty) {
+        var startDate = values[0].toString().replaceAll('00:00:00.000', '');
+        var endDate = values.length > 1
+            ? values[1].toString().replaceAll('00:00:00.000', '')
+            : 'null';
+        valueText = '$startDate to $endDate';
+      } else {
+        return 'null';
+      }
+    }
+
+    return valueText;
   }
 }
