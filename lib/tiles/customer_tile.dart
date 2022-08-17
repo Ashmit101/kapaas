@@ -20,6 +20,10 @@ class CustomerTile extends StatelessWidget {
         trailing: PopupMenuButton<DatabaseOptions>(
           itemBuilder: (context) => <PopupMenuEntry<DatabaseOptions>>[
             const PopupMenuItem(
+              value: DatabaseOptions.addmeasurement,
+              child: Text('Add Measurement'),
+            ),
+            const PopupMenuItem(
               value: DatabaseOptions.delete,
               child: Text('Delete'),
             ),
@@ -33,6 +37,9 @@ class CustomerTile extends StatelessWidget {
             final database =
                 Provider.of<KapaasDatabase>(context, listen: false);
             switch (value) {
+              case DatabaseOptions.addmeasurement:
+                AddMeasurement(context, customer);
+                break;
               case DatabaseOptions.delete:
                 database.deleteCustomer(customer);
                 refreshCustomersList(context);
@@ -50,6 +57,14 @@ class CustomerTile extends StatelessWidget {
 
   void updateCustomer(BuildContext context, Customer customer) async {
     bool succeeded = await Navigator.pushNamed(context, '/customers/form',
+        arguments: customer) as bool;
+    if (succeeded) {
+      refreshCustomersList(context);
+    }
+  }
+
+  void AddMeasurement(BuildContext context, Customer customer) async {
+    bool succeeded = await Navigator.pushNamed(context, '/customers/measurements/form',
         arguments: customer) as bool;
     if (succeeded) {
       refreshCustomersList(context);

@@ -1,51 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:kapaas/screens/category/order_category.dart';
-import 'package:kapaas/database/tables.dart';
-import 'package:provider/provider.dart';
+import 'package:kapaas/screens/category/payment_category.dart';
 
-class OrderScreen extends StatefulWidget {
-  const OrderScreen({Key? key}) : super(key: key);
+class Payments extends StatefulWidget {
+  const Payments({Key? key}) : super(key: key);
 
   @override
-  State<OrderScreen> createState() => _OrdersState();
+  State<Payments> createState() => _PaymentsState();
 }
 
-class _OrdersState extends State<OrderScreen> {
+class _PaymentsState extends State<Payments> {
   List<Categories> categories = Utils.getCategories();
-
-  final Widget circularProgress = const Center(
-    child: CircularProgressIndicator(),
-  );
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<KapaasDatabase>(context);
-    var storedOrdersData = database.allOrdersEntries;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Orders",
+        title: Text(
+          "Payments",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color.fromARGB(221, 29, 29, 29),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() async {
-          bool? succeeded =
-              await Navigator.pushNamed(context, '/orders/form') as bool?;
-
-          if (succeeded != null && succeeded == true) {
-            // refreshData
-          }
-        }),
-        child: const Icon(Icons.add),
+        backgroundColor: Color.fromARGB(221, 29, 29, 29),
       ),
       body: getBody(),
     );
@@ -57,8 +32,8 @@ class _OrdersState extends State<OrderScreen> {
       itemCount: categories.length,
       itemBuilder: (BuildContext ctx, int index) {
         return Container(
-            margin: const EdgeInsets.only(top: 10, right: 10, left:10),
-            height: 120,
+            margin: EdgeInsets.only(top: 20, right: 20, left:20),
+            height: 140,
             child: Stack(
               children: [
                 Positioned(
@@ -99,25 +74,45 @@ class _OrdersState extends State<OrderScreen> {
                               fontSize: 14,
                             ),
                           ),
+                          Text(
+                            'payment_id: ${categories[index].paymentId}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                            ),
+                          ),
                           SizedBox(
                             height: 10,
                           ),
                           Text(
-                            'Order Date: 2022-08-24',
+                            'Total: Rs ${categories[index].total}',
                             style: TextStyle(
-                                color: Colors.green,
-                                fontSize: 15,
-                                ),
-                          ),
-                          Text(
-                            'Deadline: 2022-08-24',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 15,
-                                ),
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 80,
+                            // shape: RoundedRectangleBorder(
+                              // borderRadius: BorderRadius.circular(20)),
+                            child: const Text(
+                            "Paid",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          ),
+                        ),
+                      )
                     ],
                   ))),
                 )

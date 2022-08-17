@@ -16,6 +16,7 @@ class Customers extends Table {
 
 class Orders extends Table {
   IntColumn get id => integer().autoIncrement().nullable()();
+  DateTimeColumn get orderDate => dateTime()();
   DateTimeColumn get deadline => dateTime()();
   IntColumn get productId => integer()();
   IntColumn get customerId => integer().references(Customers, #id)();
@@ -93,4 +94,4 @@ LazyDatabase _openConnection() {
   });
 }
 
-enum DatabaseOptions { delete, edit }
+enum DatabaseOptions { addmeasurement, delete, edit }

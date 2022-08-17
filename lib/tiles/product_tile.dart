@@ -87,6 +87,15 @@ class _ProductsState extends State<Products> {
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
+
+    //responsive design
+    var crossAxisCountVar = 2;
+    var dynamicHeight = 115;
+    if (size.width > 800){
+      crossAxisCountVar = 4;
+      dynamicHeight = 215;
+    }
+
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -154,10 +163,11 @@ class _ProductsState extends State<Products> {
               child: GridView.builder(
                 physics: const ScrollPhysics(),
                 shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 15),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCountVar,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                ),
                 itemCount: subCategory?.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -177,7 +187,7 @@ class _ProductsState extends State<Products> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Container(
-                        margin: const EdgeInsets.only(top: 115),
+                        margin: EdgeInsets.only(top: (dynamicHeight).toDouble() ),
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(100, 0, 0, 0),
                           border: Border.all(),
