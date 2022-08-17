@@ -11,6 +11,7 @@ import 'package:kapaas/forms/employees_form.dart';
 import 'package:kapaas/forms/measurements_form.dart';
 import 'package:kapaas/forms/order_form.dart';
 import 'package:kapaas/screens/customers.dart';
+import 'package:kapaas/screens/orders.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
 
           '/about': (context) => const AboutScreen(),
 
+          '/orders': (context) => const OrderScreen(),
           '/orders': (context) => const OrderScreen(),
           '/orders/form': (context) => const OrderForm(),
 
@@ -253,6 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Orders', style: TextStyle(fontSize: 16)),
               onTap: (() {
                 // Go to customers page
+                navigateTo(Screens.orders);
                 navigateTo(Screens.orders);
               }),
             ),

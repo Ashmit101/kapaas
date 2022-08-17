@@ -35,6 +35,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.9
   path_provider: ^2.0.11
   provider: ^6.0.3
+  calendar_date_picker2: ^0.2.2
 
 
 
