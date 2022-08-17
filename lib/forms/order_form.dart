@@ -1,5 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:kapaas/database/json/constants.dart';
 import 'package:provider/provider.dart';
 import '../database/tables.dart';
 
@@ -16,6 +17,11 @@ class _OrderFormState extends State<OrderForm> {
   int? customerId;
   int? productId;
   DateTime? deadline;
+
+  // Booleans to check whether the required data has been selected
+  var customerChosen = false;
+  var productChosen = false;
+  var deadlinePicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +41,9 @@ class _OrderFormState extends State<OrderForm> {
                   title: const Text('Enter order details'),
                 ),
                 body: Column(
-                  // Choose a customer
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Choose a customer
                     DropdownButton<Customer>(
                       value: dropdownValue,
                       icon: const Icon(Icons.person),
@@ -57,35 +63,57 @@ class _OrderFormState extends State<OrderForm> {
                         );
                       }).toList(),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          productId = await Navigator.pushNamed(
-                              context, '/products',
-                              arguments: true) as int;
-                          print("Product chose : $productId");
-                        },
-                        child: const Text('Choose Product'),
+
+                    // Choose a product
+                    Visibility(
+                      visible: productChosen,
+                      replacement: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            productId = await Navigator.pushNamed(
+                                context, '/products',
+                                arguments: true) as int?;
+                            if (productId != null) {
+                              print("Product chose : $productId");
+                              setState(() {
+                                productChosen = true;
+                              });
+                            }
+                          },
+                          child: Container(
+                            child: Image(
+                              image: AssetImage(
+                                  ProductHelper.getProductResourceFromID(
+                                      productId ?? 101)['imgUrl'] as String),
+                            ),
+                          ),
+                        ),
                       ),
+                      child: Text('Product id : $productId'),
                     ),
                     //Date Picker
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          var results = await showCalendarDatePicker2Dialog(
-                              context: context,
-                              config: config,
-                              dialogSize: const Size(325, 400));
-                          if (results != null && results.isNotEmpty) {
-                            print("Results type : ${results.runtimeType}");
-                            print(_getValueText(config.calendarType, results));
-                            deadline = results[0];
-                          }
-                        },
-                        child: const Text('Deadline'),
+                    Visibility(
+                      visible: deadlinePicked,
+                      replacement: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            var results = await showCalendarDatePicker2Dialog(
+                                context: context,
+                                config: config,
+                                dialogSize: const Size(325, 400));
+                            if (results != null && results.isNotEmpty) {
+                              setState(() {
+                                deadlinePicked = true;
+                              });
+                            }
+                          },
+                          child: const Text('Deadline'),
+                        ),
                       ),
+                      child: Text(
+                          "Deadline: ${deadline.toString().replaceAll('00:00:00.000', '')}"),
                     ),
                     // Place the order
                     Padding(
@@ -99,7 +127,6 @@ class _OrderFormState extends State<OrderForm> {
                                 deadline: deadline as DateTime,
                                 productId: productId as int,
                                 customerId: customerId as int);
-                            print('Placed order : $order');
                             database.insertOrder(order);
 
                             Navigator.pop(context);
@@ -117,34 +144,5 @@ class _OrderFormState extends State<OrderForm> {
             child: CircularProgressIndicator(),
           );
         });
-  }
-
-  String _getValueText(
-    CalendarDatePicker2Type datePickerType,
-    List<DateTime?> values,
-  ) {
-    var valueText = (values.isNotEmpty ? values[0] : null)
-        .toString()
-        .replaceAll('00:00:00.000', '');
-
-    if (datePickerType == CalendarDatePicker2Type.multi) {
-      valueText = values.isNotEmpty
-          ? values
-              .map((v) => v.toString().replaceAll('00:00:00.000', ''))
-              .join(', ')
-          : 'null';
-    } else if (datePickerType == CalendarDatePicker2Type.range) {
-      if (values.isNotEmpty) {
-        var startDate = values[0].toString().replaceAll('00:00:00.000', '');
-        var endDate = values.length > 1
-            ? values[1].toString().replaceAll('00:00:00.000', '')
-            : 'null';
-        valueText = '$startDate to $endDate';
-      } else {
-        return 'null';
-      }
-    }
-
-    return valueText;
   }
 }

@@ -129,7 +129,7 @@ class _ProductScreenState extends State<ProductScreen> {
               return GestureDetector(
                 onTap: () async {
                   if (ordering ?? false) {
-                    int productId = await Navigator.push(
+                    int? productId = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => product_tile.Products(
@@ -137,8 +137,10 @@ class _ProductScreenState extends State<ProductScreen> {
                             img: categories[index]['imgUrl'] as String,
                             ordering: true,
                           ),
-                        )) as int;
-                    Navigator.pop(context, productId);
+                        )) as int?;
+                    if (productId != null) {
+                      Navigator.pop(context, productId);
+                    }
                   } else {
                     Navigator.push(
                         context,
