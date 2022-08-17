@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:kapaas/database/tables.dart';
@@ -9,6 +11,7 @@ import 'package:kapaas/screens/customers.dart';
 import 'screens/screens.dart';
 
 import 'screens/products.dart';
+import 'screens/payment.dart';
 import 'screens/employees.dart';
 import 'screens/about.dart';
 
@@ -37,6 +40,8 @@ class MyApp extends StatelessWidget {
 
           '/products': (context) => const ProductScreen(),
 
+          '/payment': (context) => const Payments(),
+
           '/employees': (context) => const EmployeeScreen(),
           '/employees/form': (context) => const EmployeesForm(),
 
@@ -63,61 +68,58 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<String> imageList = [
-    'assets/images/marina-abrosimova-S-T0FPEnGZM-unsplash.jpg',
-    'assets/images/ayrton-bR4BzKRZSDo-unsplash.jpg',
-    'assets/images/freysteinn-g-jonsson-X4wXfbhUe_4-unsplash.jpg',
-    'assets/images/dmitry-dreyer-Qx1PqHChW80-unsplash.jpg',
-  ];
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    var drawerWidth = size.width > 800 ? size.width * 0.25 : size.width * 0.75;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
 
-      body: Column(children: [
-        Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: CarouselSlider.builder(
-            itemCount: imageList.length,
-            options: CarouselOptions(
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 10),
-              viewportFraction: 1,
-              reverse: false,
-              aspectRatio: 2,
-            ),
-            itemBuilder: (context, i, id) {
-              return GestureDetector(
-                  child: ClipRRect(
-                child: Image.asset(
-                  imageList[i],
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                ),
-              ));
-            },
+      body: Container(
+        alignment: Alignment.topLeft,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/flower.jpg'),
+            fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(height: 20),
-        ElevatedButton.icon(
-          onPressed: () {
-            Navigator.pushNamed(context, '/orders/form');
-          },
-          icon: const Icon(Icons.add_shopping_cart_rounded),
-          label: const Text('Place Order Now!'),
-        )
-      ]),
-      drawerScrimColor: Color.fromARGB(200, 0, 0, 0),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child : SingleChildScrollView(
+            child: Column(
+            children: [
+            Container(
+              height: 0.1*MediaQuery.of(context).size.height,
+              alignment: Alignment.center,
+              child: Text(
+                'Welcome',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: (32 * size.height * 0.0016 ).toDouble(),
+                ),
+              ),
+              width: size.width,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(100, 0, 0, 0),
+              ),
+              padding: const EdgeInsets.all(10),
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/orders/form');
+              },
+              icon: const Icon(Icons.add_shopping_cart_rounded),
+              label: const Text('Place Order Now!'),
+            )
+          ]),
+        ),
+      ),
+      drawerScrimColor:const Color.fromARGB(100, 0, 0, 0),
       drawer: Drawer(
-        width: MediaQuery.of(context).size.width * 0.75, // 75% width
+        width: drawerWidth, 
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -161,6 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Payments', style: TextStyle(fontSize: 16)),
               onTap: (() {
                 // Go to customers page
+                navigateTo(Screens.payments);
               }),
             ),
             ListTile(
@@ -194,10 +197,11 @@ class _MyHomePageState extends State<MyHomePage> {
         // TODO: Handle this case.
         break;
       case Screens.products:
-        Navigator.pushNamed(context, '/products');
+        Navigator.pushNamed(context, '/products',arguments: false);
         break;
       case Screens.payments:
         // TODO: Handle this case.
+        Navigator.pushNamed(context, '/payment');
         break;
       case Screens.employees:
         Navigator.pushNamed(context, '/employees');
