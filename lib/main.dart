@@ -65,12 +65,76 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<String> imageList = [
-    'assets/images/marina-abrosimova-S-T0FPEnGZM-unsplash.jpg',
-    'assets/images/ayrton-bR4BzKRZSDo-unsplash.jpg',
-    'assets/images/freysteinn-g-jonsson-X4wXfbhUe_4-unsplash.jpg',
-    'assets/images/dmitry-dreyer-Qx1PqHChW80-unsplash.jpg',
+  final List<Widget> imageListItems = [
+    // container for image1
+    Container(
+      margin: const EdgeInsets.all(6.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/coat.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
+    // container for image2
+    Container(
+      margin: const EdgeInsets.all(6.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/gown.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
+    // container for image3
+    Container(
+      margin: const EdgeInsets.all(6.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/lehenga.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
+    // container for image4
+    Container(
+      margin: const EdgeInsets.all(6.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/saree.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
+    // container for image5
+    Container(
+      margin: const EdgeInsets.all(6.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/suit.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
+    // container for image6
+    Container(
+      margin: const EdgeInsets.all(6.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/suit2.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ),
   ];
+
+  //New scrollcontroller to remove scrollcontroller error
 
   @override
   Widget build(BuildContext context) {
@@ -79,39 +143,38 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
 
-      body: Column(children: [
-        Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: CarouselSlider.builder(
-            itemCount: imageList.length,
-            options: CarouselOptions(
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 10),
-              viewportFraction: 1,
-              reverse: false,
-              aspectRatio: 2,
+      body: Column(mainAxisSize: MainAxisSize.max,
+          //crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListView(
+              shrinkWrap: true,
+              controller: ScrollController(),
+              children: [
+                CarouselSlider(
+                  items: imageListItems,
+                  options: CarouselOptions(
+                    height: MediaQuery.of(context).size.height / 2,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    aspectRatio: MediaQuery.of(context).size.aspectRatio,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration:
+                        const Duration(milliseconds: 800),
+                    viewportFraction: 0.8,
+                  ),
+                )
+              ],
             ),
-            itemBuilder: (context, i, id) {
-              return GestureDetector(
-                  child: ClipRRect(
-                child: Image.asset(
-                  imageList[i],
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.cover,
-                ),
-              ));
-            },
-          ),
-        ),
-        const SizedBox(height: 20),
-        ElevatedButton.icon(
-          onPressed: () {
-            Navigator.pushNamed(context, '/orders/form');
-          },
-          icon: const Icon(Icons.add_shopping_cart_rounded),
-          label: const Text('Place Order Now!'),
-        )
-      ]),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/orders/form');
+              },
+              icon: const Icon(Icons.add_shopping_cart_rounded),
+              label: const Text('Place Order Now!'),
+            )
+          ]),
       drawerScrimColor: Color.fromARGB(200, 0, 0, 0),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
