@@ -111,13 +111,14 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                     onPressed: (() {
                       if (_formKey.currentState!.validate()) {
                         // Inputs are valied
-                        var neck = neckController.text as double;
-                        var waist = waistController.text as double;
-                        var arm = armController.text as double;
-                        var hip = hipController.text as double;
-                        var wrist = wristController.text as double;
+                        var neck = double.parse(neckController.text);
+                        var waist = double.parse(waistController.text);
+                        var arm = double.parse(armController.text);
+                        var hip = double.parse(hipController.text);
+                        var wrist = double.parse(wristController.text);
 
-                        final database = Provider.of<KapaasDatabase>(context);
+                        final database =
+                            Provider.of<KapaasDatabase>(context, listen: false);
 
                         final measurement = Measurement(
                             customerId: id,

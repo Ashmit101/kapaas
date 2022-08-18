@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:kapaas/database/tables.dart';
 import 'package:kapaas/screens/category/payment_category.dart';
+import 'package:provider/provider.dart';
+
+import '../tiles/order_tile.dart';
 
 class Payments extends StatefulWidget {
   const Payments({Key? key}) : super(key: key);
@@ -14,15 +18,40 @@ class _PaymentsState extends State<Payments> {
   List<Categories> categories = Utils.getCategories();
   @override
   Widget build(BuildContext context) {
+    final database = Provider.of<KapaasDatabase>(context);
+    var storedOrdersData = database.allOrdersEntries;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Payments",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color.fromARGB(221, 29, 29, 29),
       ),
-      body: getBody(),
+      body: FutureBuilder(
+          future: storedOrdersData,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                var orders = snapshot.data as List<Order>;
+                if (orders.isNotEmpty) {
+                  print(orders);
+                  return ListView.builder(
+                      itemCount: orders.length,
+                      itemBuilder: ((context, index) {
+                        print("Index: $index");
+                        return OrderTile(
+                          order: orders[index],
+                          isForPayment: true,
+                        );
+                      }));
+                }
+              }
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
     );
   }
 
@@ -32,7 +61,7 @@ class _PaymentsState extends State<Payments> {
       itemCount: categories.length,
       itemBuilder: (BuildContext ctx, int index) {
         return Container(
-            margin: EdgeInsets.only(top: 20, right: 20, left:20),
+            margin: EdgeInsets.only(top: 20, right: 20, left: 20),
             height: 140,
             child: Stack(
               children: [
@@ -94,7 +123,8 @@ class _PaymentsState extends State<Payments> {
                         ],
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 18),
                         decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(10),
@@ -105,11 +135,11 @@ class _PaymentsState extends State<Payments> {
                             alignment: Alignment.center,
                             height: 80,
                             // shape: RoundedRectangleBorder(
-                              // borderRadius: BorderRadius.circular(20)),
+                            // borderRadius: BorderRadius.circular(20)),
                             child: const Text(
-                            "Paid",
-                            style: TextStyle(color: Colors.white),
-                          ),
+                              "Paid",
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       )

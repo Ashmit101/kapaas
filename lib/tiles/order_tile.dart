@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kapaas/database/tables.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class OrderTile extends StatefulWidget {
@@ -33,10 +34,24 @@ class _OrderTileState extends State<OrderTile> {
     var orderedDate = currentOrder.orderDate;
     var deadline = currentOrder.deadline;
     var orderId = currentOrder.id;
+    var paid = currentOrder.paid;
+    String paymentStatus = '';
 
     //Getting proper string for the datet and time
     var orderedDateString = getProperDate(orderedDate);
     var deadlineString = getProperDate(deadline);
+
+    // Check if it is for the payment page
+    var isPayment = widget.isForPayment;
+
+    // Get the paid status if it is for payment
+    if (isPayment) {
+      if (paid) {
+        paymentStatus = "Paid";
+      } else {
+        paymentStatus = "Unpaid";
+      }
+    }
 
     return Container(
         margin: const EdgeInsets.only(top: 10, right: 10, left: 10),
@@ -58,7 +73,6 @@ class _OrderTileState extends State<OrderTile> {
               padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
               child: Container(
                   child: (Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
@@ -116,10 +130,48 @@ class _OrderTileState extends State<OrderTile> {
                       )
                     ],
                   ),
+                  Visibility(
+                    visible: isPayment,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 18),
+                      decoration: BoxDecoration(
+                        color: paid ? Colors.green : Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          updateOrderPaymentStatus(database, currentOrder);
+                          Navigator.popAndPushNamed(context, '/payment');
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 80,
+                          // shape: RoundedRectangleBorder(
+                          // borderRadius: BorderRadius.circular(20)),
+                          child: Text(
+                            paymentStatus,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ))),
             )
           ],
         ));
+  }
+
+  void updateOrderPaymentStatus(KapaasDatabase database, Order currentOrder) {
+    Order newOrder = Order(
+        id: currentOrder.id,
+        orderDate: currentOrder.orderDate,
+        deadline: currentOrder.deadline,
+        productId: currentOrder.productId,
+        paid: !currentOrder.paid,
+        customerId: currentOrder.customerId);
+    database.updateOrder(newOrder);
   }
 }
