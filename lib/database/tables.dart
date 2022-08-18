@@ -24,12 +24,15 @@ class Orders extends Table {
 }
 
 class Measurements extends Table {
-  IntColumn get customerId => integer()();
+  IntColumn get customerId => integer().references(Customers, #id)();
   RealColumn get neck => real()();
   RealColumn get waist => real()();
   RealColumn get arm => real()();
   RealColumn get hip => real()();
   RealColumn get wrist => real()();
+
+  @override
+  Set<Column> get primaryKey => {customerId};
 }
 
 class Employees extends Table {
@@ -88,6 +91,12 @@ class KapaasDatabase extends _$KapaasDatabase {
 
   Future<List<Customer>> getCustomer(int customerId) async {
     return (select(customers)..where((tbl) => tbl.id.equals(customerId))).get();
+  }
+
+  Future<List<Measurement>> getMeasurement(int customerId) async {
+    return (select(measurements)
+          ..where((tbl) => tbl.customerId.equals(customerId)))
+        .get();
   }
 }
 

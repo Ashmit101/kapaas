@@ -55,9 +55,7 @@ class MyApp extends StatelessWidget {
           '/orders': (context) => const OrderScreen(),
           '/orders/form': (context) => const OrderForm(),
 
-          '/customers/measurements/form': (context) => const MeasurementsForm(
-                customerId: 0,
-              ),
+          '/customers/measurements/form': (context) => const MeasurementsForm(),
         },
       ),
     );

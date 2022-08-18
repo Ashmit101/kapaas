@@ -3,10 +3,7 @@ import 'package:kapaas/database/tables.dart';
 import 'package:provider/provider.dart';
 
 class MeasurementsForm extends StatefulWidget {
-  final int customerId;
-
-  const MeasurementsForm({Key? key, required this.customerId})
-      : super(key: key);
+  const MeasurementsForm({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _MeasurementsFormState();
@@ -25,11 +22,12 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
   @override
   void initState() {
     super.initState();
-    id = widget.customerId;
   }
 
   @override
   Widget build(BuildContext context) {
+    final customer = ModalRoute.of(context)!.settings.arguments as Customer;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Measurements'),
@@ -121,7 +119,7 @@ class _MeasurementsFormState extends State<MeasurementsForm> {
                             Provider.of<KapaasDatabase>(context, listen: false);
 
                         final measurement = Measurement(
-                            customerId: id,
+                            customerId: customer.id as int,
                             neck: neck,
                             waist: waist,
                             arm: arm,
