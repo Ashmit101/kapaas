@@ -36,6 +36,7 @@ dependencies:
   path_provider: ^2.0.11
   provider: ^6.0.3
   calendar_date_picker2: ^0.2.2
+  intl: ^0.17.0
 
 
 

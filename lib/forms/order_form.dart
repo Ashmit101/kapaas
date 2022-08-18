@@ -260,10 +260,12 @@ class _OrderFormState extends State<OrderForm> {
                                 final order = Order(
                                     deadline: deadline as DateTime,
                                     productId: productId as int,
-                                    customerId: customerId as int);
+                                    customerId: customerId as int,
+                                    orderDate: DateTime.now(),
+                                    paid: false);
+                                print('Placed order: $order');
                                 database.insertOrder(order);
-
-                                Navigator.pop(context);
+                                Navigator.pop(context, true);
                               }
                             },
                             child: const Text('Place'),

@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
           '/about': (context) => const AboutScreen(),
 
           '/orders': (context) => const OrderScreen(),
-          '/orders': (context) => const OrderScreen(),
           '/orders/form': (context) => const OrderForm(),
 
           '/customers/measurements/form': (context) => const MeasurementsForm(
@@ -75,34 +74,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    var scale_factor = size.width/800;
+    var scale_factor = size.width / 800;
     //smallscreen
     var drawerWidth = size.width * 0.75;
     var crossCount = 1;
     var rfontSize = 36;
     var logoSize = 40;
     //largeScreen
-    if ( size.width > 800 ){
+    if (size.width > 800) {
       drawerWidth = size.width * 0.25;
       crossCount = 2;
       rfontSize = 40;
       logoSize = 60;
     }
-  
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 242, 238, 238),
       resizeToAvoidBottomInset: false,
-
       appBar: AppBar(
         title: Text(widget.title),
       ),
-
       body: Stack(
         children: [
           Container(
@@ -128,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(44*scale_factor),
+                      borderRadius: BorderRadius.circular(44 * scale_factor),
                       child: Image.asset(
                         'assets/logo.png',
                         width: logoSize.toDouble(),
@@ -136,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ]),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Expanded(
@@ -224,9 +219,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawerScrimColor:const Color.fromARGB(100, 0, 0, 0),
+      drawerScrimColor: const Color.fromARGB(100, 0, 0, 0),
       drawer: Drawer(
-        width: drawerWidth, 
+        width: drawerWidth,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -255,7 +250,6 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Orders', style: TextStyle(fontSize: 16)),
               onTap: (() {
                 // Go to customers page
-                navigateTo(Screens.orders);
                 navigateTo(Screens.orders);
               }),
             ),
@@ -303,14 +297,12 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.pushNamed(context, '/customers');
         break;
       case Screens.orders:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/orders');
         break;
       case Screens.products:
-        Navigator.pushNamed(context, '/products',arguments: false);
+        Navigator.pushNamed(context, '/products', arguments: false);
         break;
       case Screens.payments:
-        // TODO: Handle this case.
         Navigator.pushNamed(context, '/payment');
         break;
       case Screens.employees:

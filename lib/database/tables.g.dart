@@ -220,22 +220,30 @@ class $CustomersTable extends Customers
 
 class Order extends DataClass implements Insertable<Order> {
   final int? id;
+  final DateTime orderDate;
   final DateTime deadline;
   final int productId;
+  final bool paid;
   final int customerId;
   Order(
       {this.id,
+      required this.orderDate,
       required this.deadline,
       required this.productId,
+      required this.paid,
       required this.customerId});
   factory Order.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return Order(
       id: const IntType().mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      orderDate: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}order_date'])!,
       deadline: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deadline'])!,
       productId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}product_id'])!,
+      paid: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}paid'])!,
       customerId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}customer_id'])!,
     );
@@ -246,8 +254,10 @@ class Order extends DataClass implements Insertable<Order> {
     if (!nullToAbsent || id != null) {
       map['id'] = Variable<int?>(id);
     }
+    map['order_date'] = Variable<DateTime>(orderDate);
     map['deadline'] = Variable<DateTime>(deadline);
     map['product_id'] = Variable<int>(productId);
+    map['paid'] = Variable<bool>(paid);
     map['customer_id'] = Variable<int>(customerId);
     return map;
   }
@@ -255,8 +265,10 @@ class Order extends DataClass implements Insertable<Order> {
   OrdersCompanion toCompanion(bool nullToAbsent) {
     return OrdersCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      orderDate: Value(orderDate),
       deadline: Value(deadline),
       productId: Value(productId),
+      paid: Value(paid),
       customerId: Value(customerId),
     );
   }
@@ -266,8 +278,10 @@ class Order extends DataClass implements Insertable<Order> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Order(
       id: serializer.fromJson<int?>(json['id']),
+      orderDate: serializer.fromJson<DateTime>(json['orderDate']),
       deadline: serializer.fromJson<DateTime>(json['deadline']),
       productId: serializer.fromJson<int>(json['productId']),
+      paid: serializer.fromJson<bool>(json['paid']),
       customerId: serializer.fromJson<int>(json['customerId']),
     );
   }
@@ -276,85 +290,114 @@ class Order extends DataClass implements Insertable<Order> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
+      'orderDate': serializer.toJson<DateTime>(orderDate),
       'deadline': serializer.toJson<DateTime>(deadline),
       'productId': serializer.toJson<int>(productId),
+      'paid': serializer.toJson<bool>(paid),
       'customerId': serializer.toJson<int>(customerId),
     };
   }
 
   Order copyWith(
-          {int? id, DateTime? deadline, int? productId, int? customerId}) =>
+          {int? id,
+          DateTime? orderDate,
+          DateTime? deadline,
+          int? productId,
+          bool? paid,
+          int? customerId}) =>
       Order(
         id: id ?? this.id,
+        orderDate: orderDate ?? this.orderDate,
         deadline: deadline ?? this.deadline,
         productId: productId ?? this.productId,
+        paid: paid ?? this.paid,
         customerId: customerId ?? this.customerId,
       );
   @override
   String toString() {
     return (StringBuffer('Order(')
           ..write('id: $id, ')
+          ..write('orderDate: $orderDate, ')
           ..write('deadline: $deadline, ')
           ..write('productId: $productId, ')
+          ..write('paid: $paid, ')
           ..write('customerId: $customerId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, deadline, productId, customerId);
+  int get hashCode =>
+      Object.hash(id, orderDate, deadline, productId, paid, customerId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Order &&
           other.id == this.id &&
+          other.orderDate == this.orderDate &&
           other.deadline == this.deadline &&
           other.productId == this.productId &&
+          other.paid == this.paid &&
           other.customerId == this.customerId);
 }
 
 class OrdersCompanion extends UpdateCompanion<Order> {
   final Value<int?> id;
+  final Value<DateTime> orderDate;
   final Value<DateTime> deadline;
   final Value<int> productId;
+  final Value<bool> paid;
   final Value<int> customerId;
   const OrdersCompanion({
     this.id = const Value.absent(),
+    this.orderDate = const Value.absent(),
     this.deadline = const Value.absent(),
     this.productId = const Value.absent(),
+    this.paid = const Value.absent(),
     this.customerId = const Value.absent(),
   });
   OrdersCompanion.insert({
     this.id = const Value.absent(),
+    required DateTime orderDate,
     required DateTime deadline,
     required int productId,
+    this.paid = const Value.absent(),
     required int customerId,
-  })  : deadline = Value(deadline),
+  })  : orderDate = Value(orderDate),
+        deadline = Value(deadline),
         productId = Value(productId),
         customerId = Value(customerId);
   static Insertable<Order> custom({
     Expression<int?>? id,
+    Expression<DateTime>? orderDate,
     Expression<DateTime>? deadline,
     Expression<int>? productId,
+    Expression<bool>? paid,
     Expression<int>? customerId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (orderDate != null) 'order_date': orderDate,
       if (deadline != null) 'deadline': deadline,
       if (productId != null) 'product_id': productId,
+      if (paid != null) 'paid': paid,
       if (customerId != null) 'customer_id': customerId,
     });
   }
 
   OrdersCompanion copyWith(
       {Value<int?>? id,
+      Value<DateTime>? orderDate,
       Value<DateTime>? deadline,
       Value<int>? productId,
+      Value<bool>? paid,
       Value<int>? customerId}) {
     return OrdersCompanion(
       id: id ?? this.id,
+      orderDate: orderDate ?? this.orderDate,
       deadline: deadline ?? this.deadline,
       productId: productId ?? this.productId,
+      paid: paid ?? this.paid,
       customerId: customerId ?? this.customerId,
     );
   }
@@ -365,11 +408,17 @@ class OrdersCompanion extends UpdateCompanion<Order> {
     if (id.present) {
       map['id'] = Variable<int?>(id.value);
     }
+    if (orderDate.present) {
+      map['order_date'] = Variable<DateTime>(orderDate.value);
+    }
     if (deadline.present) {
       map['deadline'] = Variable<DateTime>(deadline.value);
     }
     if (productId.present) {
       map['product_id'] = Variable<int>(productId.value);
+    }
+    if (paid.present) {
+      map['paid'] = Variable<bool>(paid.value);
     }
     if (customerId.present) {
       map['customer_id'] = Variable<int>(customerId.value);
@@ -381,8 +430,10 @@ class OrdersCompanion extends UpdateCompanion<Order> {
   String toString() {
     return (StringBuffer('OrdersCompanion(')
           ..write('id: $id, ')
+          ..write('orderDate: $orderDate, ')
           ..write('deadline: $deadline, ')
           ..write('productId: $productId, ')
+          ..write('paid: $paid, ')
           ..write('customerId: $customerId')
           ..write(')'))
         .toString();
@@ -401,6 +452,11 @@ class $OrdersTable extends Orders with TableInfo<$OrdersTable, Order> {
       type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _orderDateMeta = const VerificationMeta('orderDate');
+  @override
+  late final GeneratedColumn<DateTime?> orderDate = GeneratedColumn<DateTime?>(
+      'order_date', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _deadlineMeta = const VerificationMeta('deadline');
   @override
   late final GeneratedColumn<DateTime?> deadline = GeneratedColumn<DateTime?>(
@@ -411,6 +467,14 @@ class $OrdersTable extends Orders with TableInfo<$OrdersTable, Order> {
   late final GeneratedColumn<int?> productId = GeneratedColumn<int?>(
       'product_id', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _paidMeta = const VerificationMeta('paid');
+  @override
+  late final GeneratedColumn<bool?> paid = GeneratedColumn<bool?>(
+      'paid', aliasedName, false,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (paid IN (0, 1))',
+      defaultValue: const Constant(false));
   final VerificationMeta _customerIdMeta = const VerificationMeta('customerId');
   @override
   late final GeneratedColumn<int?> customerId = GeneratedColumn<int?>(
@@ -419,7 +483,8 @@ class $OrdersTable extends Orders with TableInfo<$OrdersTable, Order> {
       requiredDuringInsert: true,
       defaultConstraints: 'REFERENCES customers (id)');
   @override
-  List<GeneratedColumn> get $columns => [id, deadline, productId, customerId];
+  List<GeneratedColumn> get $columns =>
+      [id, orderDate, deadline, productId, paid, customerId];
   @override
   String get aliasedName => _alias ?? 'orders';
   @override
@@ -432,6 +497,12 @@ class $OrdersTable extends Orders with TableInfo<$OrdersTable, Order> {
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
+    if (data.containsKey('order_date')) {
+      context.handle(_orderDateMeta,
+          orderDate.isAcceptableOrUnknown(data['order_date']!, _orderDateMeta));
+    } else if (isInserting) {
+      context.missing(_orderDateMeta);
+    }
     if (data.containsKey('deadline')) {
       context.handle(_deadlineMeta,
           deadline.isAcceptableOrUnknown(data['deadline']!, _deadlineMeta));
@@ -443,6 +514,10 @@ class $OrdersTable extends Orders with TableInfo<$OrdersTable, Order> {
           productId.isAcceptableOrUnknown(data['product_id']!, _productIdMeta));
     } else if (isInserting) {
       context.missing(_productIdMeta);
+    }
+    if (data.containsKey('paid')) {
+      context.handle(
+          _paidMeta, paid.isAcceptableOrUnknown(data['paid']!, _paidMeta));
     }
     if (data.containsKey('customer_id')) {
       context.handle(

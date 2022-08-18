@@ -19,6 +19,7 @@ class Orders extends Table {
   DateTimeColumn get orderDate => dateTime()();
   DateTimeColumn get deadline => dateTime()();
   IntColumn get productId => integer()();
+  BoolColumn get paid => boolean().withDefault(const Constant(false))();
   IntColumn get customerId => integer().references(Customers, #id)();
 }
 
@@ -84,6 +85,10 @@ class KapaasDatabase extends _$KapaasDatabase {
       update(employees).replace(employee); // Update an existing employee
   Future deleteEmployee(Employee employee) =>
       delete(employees).delete(employee); // Delete a employee
+
+  Future<List<Customer>> getCustomer(int customerId) async {
+    return (select(customers)..where((tbl) => tbl.id.equals(customerId))).get();
+  }
 }
 
 LazyDatabase _openConnection() {
